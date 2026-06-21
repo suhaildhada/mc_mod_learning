@@ -39,18 +39,18 @@ public class MultiblockStructure {
                         int x = posList.getInt(0);
                         int y = posList.getInt(1);
                         int z = posList.getInt(2);
-                        
+
                         BlockPos pos = new BlockPos(x, y, z);
                         String blockId = state.getString("Name");
                         ResourceLocation rl = rlFromString(blockId);
                         if (rl != null && BuiltInRegistries.BLOCK.getOptional(rl).isPresent()) {
                             Block block = BuiltInRegistries.BLOCK.getOptional(rl).get();
                             BlockState bs = block.defaultBlockState();
-                            
+
                             // Handle block state properties if they exist
                             if (state.contains(PROPERTIES_TAG, Tag.TAG_COMPOUND)) {
                                 CompoundTag properties = state.getCompound("Properties");
-                                for(String pKey: state.getCompound("Properties").getAllKeys()) {
+                                for (String pKey : state.getCompound("Properties").getAllKeys()) {
                                     for (net.minecraft.world.level.block.state.properties.Property<?> property : bs.getProperties()) {
                                         if (property.getName().equals(pKey)) {
                                             // Parse the string value to the appropriate property value
@@ -65,9 +65,9 @@ public class MultiblockStructure {
                                     }
                                 }
                             }
-                            
+
                             blocks.put(pos, bs);
-                            
+
                             minX = Math.min(minX, x);
                             minY = Math.min(minY, y);
                             minZ = Math.min(minZ, z);
@@ -89,48 +89,65 @@ public class MultiblockStructure {
 
     @SuppressWarnings("unchecked")
     private static <S extends BlockState, T extends Comparable<T>> S setPropertyValue(S blockState,
-          net.minecraft.world.level.block.state.properties.Property<T> property, Object value) {
+                                                                                      net.minecraft.world.level.block.state.properties.Property<T> property, Object value) {
         return (S) blockState.setValue(property, (T) value);
     }
 
     public BlockState getBlockAt(BlockPos pos) {
         return blocks.get(pos);
     }
-    
+
     public Map<BlockPos, BlockState> getBlocks() {
         return blocks;
     }
-    
+
     public int getWidth() {
         return maxX - minX + 1;
     }
-    
+
     public int getHeight() {
         return maxY - minY + 1;
     }
-    
+
     public int getDepth() {
         return maxZ - minZ + 1;
     }
-    
+
     public BlockPos getCenter() {
         return new BlockPos((minX + maxX) / 2, (minY + maxY) / 2, (minZ + maxZ) / 2);
     }
-    
-    public int getMinX() { return minX; }
-    public int getMinY() { return minY; }
-    public int getMinZ() { return minZ; }
-    public int getMaxX() { return maxX; }
-    public int getMaxY() { return maxY; }
-    public int getMaxZ() { return maxZ; }
+
+    public int getMinX() {
+        return minX;
+    }
+
+    public int getMinY() {
+        return minY;
+    }
+
+    public int getMinZ() {
+        return minZ;
+    }
+
+    public int getMaxX() {
+        return maxX;
+    }
+
+    public int getMaxY() {
+        return maxY;
+    }
+
+    public int getMaxZ() {
+        return maxZ;
+    }
 
     public ResourceLocation getId() {
         return location;
     }
 
     public String getName() {
-        if(name != null && !name.isEmpty()) {
-            if(!name.contains("mbtool")) {
+        if (name != null && !name.isEmpty()) {
+            if (!name.contains("mbtool")) {
                 return "mbtool.structure." + name.replace(".nbt", "");
             }
             return name.replace(".nbt", "");
@@ -149,8 +166,8 @@ public class MultiblockStructure {
     public List<ItemStack> getNeededItems() {
         List<ItemStack> outputs = new ArrayList<>();
         List<Block> blockTypes = new ArrayList<>();
-        for(BlockPos pos : getBlocks().keySet()) {
-            if(getBlocks().get(pos).is(AIR)) {
+        for (BlockPos pos : getBlocks().keySet()) {
+            if (getBlocks().get(pos).is(AIR)) {
                 continue;
             }
             Block block = getBlocks().get(pos).getBlock();
@@ -159,9 +176,9 @@ public class MultiblockStructure {
                 outputs.add(new ItemStack(block));
             }
         }
-        for(ItemStack stackItem :outputs) {
-            for(Map.Entry<BlockPos, BlockState> block : getBlocks().entrySet()) {
-                if(stackItem.is(block.getValue().getBlock().asItem())) {
+        for (ItemStack stackItem : outputs) {
+            for (Map.Entry<BlockPos, BlockState> block : getBlocks().entrySet()) {
+                if (stackItem.is(block.getValue().getBlock().asItem())) {
                     stackItem.setCount(stackItem.getCount() + 1);
                 }
             }
@@ -173,7 +190,7 @@ public class MultiblockStructure {
     /**
      * Filters out all air blocks from the structure NBT.
      * This is useful for reducing packet size and ensuring air blocks are not placed.
-     * 
+     *
      * @param nbt The structure NBT to filter
      * @return A new CompoundTag with air blocks removed
      */
@@ -185,19 +202,19 @@ public class MultiblockStructure {
         CompoundTag filteredNbt = nbt.copy();
         ListTag blocksList = nbt.getList("blocks", Tag.TAG_COMPOUND);
         ListTag palette = nbt.getList("palette", Tag.TAG_COMPOUND);
-        
+
         // Find air block indices in the palette
         Set<Integer> airIndices = new HashSet<>();
         for (int i = 0; i < palette.size(); i++) {
             CompoundTag paletteEntry = palette.getCompound(i);
             String blockName = paletteEntry.getString("Name");
-            if (blockName != null && (blockName.equals("minecraft:air") || 
-                                      blockName.equals("minecraft:cave_air") || 
-                                      blockName.equals("minecraft:void_air"))) {
+            if (blockName != null && (blockName.equals("minecraft:air") ||
+                    blockName.equals("minecraft:cave_air") ||
+                    blockName.equals("minecraft:void_air"))) {
                 airIndices.add(i);
             }
         }
-        
+
         // Filter out blocks that reference air palette entries
         ListTag filteredBlocksList = new ListTag();
         for (int i = 0; i < blocksList.size(); i++) {
@@ -207,7 +224,7 @@ public class MultiblockStructure {
                 filteredBlocksList.add(blockTag);
             }
         }
-        
+
         filteredNbt.put("blocks", filteredBlocksList);
         return filteredNbt;
     }

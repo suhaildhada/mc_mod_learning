@@ -1,11 +1,7 @@
 package com.suhail.learning.util;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.BufferUploader;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.blaze3d.vertex.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -28,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.suhail.learning.util.TextUtils.__;
+import static com.suhail.learning.util.TextUtils.getMutableComponent;
 
 /**
  * Utility class for rendering fluids in GUI screens without depending on JEI.
@@ -36,6 +32,10 @@ import static com.suhail.learning.util.TextUtils.__;
  * rendering fluid tanks in container screens.
  */
 public class GuiFluidRenderer {
+    private GuiFluidRenderer() {
+        /* This utility class should not be instantiated */
+    }
+
 
     private static final int TEX_WIDTH = 16;
     private static final int TEX_HEIGHT = 16;
@@ -56,9 +56,6 @@ public class GuiFluidRenderer {
         Fluid fluid = fluidStack.getFluid();
         IClientFluidTypeExtensions renderProps = IClientFluidTypeExtensions.of(fluid);
         ResourceLocation stillTexture = renderProps.getStillTexture(fluidStack);
-        if (stillTexture == null) {
-            return Optional.empty();
-        }
 
         TextureAtlasSprite sprite = Minecraft.getInstance()
                 .getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
@@ -99,11 +96,9 @@ public class GuiFluidRenderer {
 
         if (tooltipFlag.isAdvanced()) {
             ResourceLocation registryName = BuiltInRegistries.FLUID.getKey(fluid);
-            if (registryName != null) {
-                MutableComponent advancedId = Component.literal(registryName.toString())
-                        .withStyle(ChatFormatting.DARK_GRAY);
-                tooltip.add(advancedId);
-            }
+            MutableComponent advancedId = Component.literal(registryName.toString())
+                    .withStyle(ChatFormatting.DARK_GRAY);
+            tooltip.add(advancedId);
         }
 
         return tooltip;
@@ -221,7 +216,7 @@ public class GuiFluidRenderer {
                 tooltip.add(Component.literal(TextUtils.formatLiquid(fluidStack.getAmount()) + " / " + TextUtils.formatLiquid(capacity))
                         .withStyle(ChatFormatting.GRAY));
             } else {
-                tooltip.add(__("tooltip.fluid.empty").withStyle(ChatFormatting.GRAY));
+                tooltip.add(getMutableComponent("tooltip.fluid.empty").withStyle(ChatFormatting.GRAY));
             }
             guiGraphics.renderTooltip(Minecraft.getInstance().font, tooltip, Optional.empty(), mouseX, mouseY);
         }
@@ -244,13 +239,13 @@ public class GuiFluidRenderer {
         Matrix4f matrix = guiGraphics.pose().last().pose();
 
         BufferBuilder builder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
-        builder.addVertex(matrix, xOffset, yOffset + height, 0)
+        builder.addVertex(matrix, xOffset, yOffset + (float) height, 0)
                 .setUv(u0, adjustedV1)
                 .setColor(red, green, blue, alpha);
-        builder.addVertex(matrix, xOffset + width, yOffset + height, 0)
+        builder.addVertex(matrix, xOffset + (float) width, yOffset + (float) height, 0)
                 .setUv(adjustedU1, adjustedV1)
                 .setColor(red, green, blue, alpha);
-        builder.addVertex(matrix, xOffset + width, yOffset, 0)
+        builder.addVertex(matrix, xOffset + (float) width, yOffset, 0)
                 .setUv(adjustedU1, v0)
                 .setColor(red, green, blue, alpha);
         builder.addVertex(matrix, xOffset, yOffset, 0)

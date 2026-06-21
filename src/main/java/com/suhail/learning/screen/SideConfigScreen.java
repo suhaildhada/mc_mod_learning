@@ -10,7 +10,7 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.resources.ResourceLocation;
 
 import static com.suhail.learning.Main.rl;
-import static com.suhail.learning.util.TextUtils.__;
+import static com.suhail.learning.util.TextUtils.getMutableComponent;
 
 public class SideConfigScreen extends Screen {
 
@@ -28,7 +28,7 @@ public class SideConfigScreen extends Screen {
     private int winY;
 
     public SideConfigScreen(AbstractContainerScreen<UniversalProcessorContainer> parentScreen, int slotId) {
-        super(__("screen.modtemplate.side_config"));
+        super(getMutableComponent("screen.modtemplate.side_config"));
         this.parentScreen = parentScreen;
         this.slotId = slotId;
     }

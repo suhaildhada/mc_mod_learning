@@ -15,4 +15,8 @@ public class ClientUtil {
     public static Player tryGetClientPlayer() {
         return Minecraft.getInstance().player;
     }
+
+    private ClientUtil() {
+        /* This utility class should not be instantiated */
+    }
 }

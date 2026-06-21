@@ -63,4 +63,8 @@ public class WorldUtil {
     public static ChunkAccess getChunk(int chunkX, int chunkZ, ServerLevel level) {
         return level.getChunkSource().getChunk(chunkX, chunkZ, true);
     }
+
+    private WorldUtil() {
+        /* This utility class should not be instantiated */
+    }
 }

@@ -6,15 +6,16 @@ import java.util.List;
 public class SlotsLayout {
     public final List<SlotDef> slots = new ArrayList<>();
 
-    public final static SlotsLayout ONE_TO_ONE = SlotsLayout.create().addDefault(30, 30).addBig(115, 30);
-    public final static SlotsLayout ONE_TO_TWO = SlotsLayout.create().addDefault(30, 30).addDefault(115, 30).addDefault(135, 30);
-    public final static SlotsLayout TWO_TO_ONE = SlotsLayout.create().addDefault(30, 30).addDefault(50, 30).addDefault(115, 30);
-    public final static SlotsLayout TWO_TO_TWO = SlotsLayout.create().addDefault(30, 30).addDefault(50, 30).addDefault(115, 30).addDefault(135, 30);
-    public final static SlotsLayout ONE_TO_THREE = SlotsLayout.create().addDefault(30, 30).addDefault(50, 30).addDefault(115, 30).addDefault(135, 30).addDefault(155, 30);
-    public final static SlotsLayout THREE_TO_ONE = SlotsLayout.create().addDefault(10, 30).addDefault(30, 30).addDefault(50, 30).addDefault(115, 30);
-    public final static SlotsLayout THREE_TO_TWO = SlotsLayout.create().addDefault(10, 30).addDefault(30, 30).addDefault(50, 30).addDefault(115, 30).addDefault(135, 30);
+    public static final SlotsLayout ONE_TO_ONE = SlotsLayout.create().addDefault(30, 30).addBig(115, 30);
+    public static final SlotsLayout ONE_TO_TWO = SlotsLayout.create().addDefault(30, 30).addDefault(115, 30).addDefault(135, 30);
+    public static final SlotsLayout TWO_TO_ONE = SlotsLayout.create().addDefault(30, 30).addDefault(50, 30).addDefault(115, 30);
+    public static final SlotsLayout TWO_TO_TWO = SlotsLayout.create().addDefault(30, 30).addDefault(50, 30).addDefault(115, 30).addDefault(135, 30);
+    public static final SlotsLayout ONE_TO_THREE = SlotsLayout.create().addDefault(30, 30).addDefault(50, 30).addDefault(115, 30).addDefault(135, 30).addDefault(155, 30);
+    public static final SlotsLayout THREE_TO_ONE = SlotsLayout.create().addDefault(10, 30).addDefault(30, 30).addDefault(50, 30).addDefault(115, 30);
+    public static final SlotsLayout THREE_TO_TWO = SlotsLayout.create().addDefault(10, 30).addDefault(30, 30).addDefault(50, 30).addDefault(115, 30).addDefault(135, 30);
 
-    private SlotsLayout() {}
+    private SlotsLayout() {
+    }
 
     public static SlotsLayout create() {
         return new SlotsLayout();

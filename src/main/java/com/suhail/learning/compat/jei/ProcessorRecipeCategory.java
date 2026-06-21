@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.suhail.learning.util.TextUtils.__;
+import static com.suhail.learning.util.TextUtils.getMutableComponent;
 
 public class ProcessorRecipeCategory implements IRecipeCategory<UniversalProcessorRecipe> {
 
@@ -46,7 +46,7 @@ public class ProcessorRecipeCategory implements IRecipeCategory<UniversalProcess
     public ProcessorRecipeCategory(IGuiHelper guiHelper, ModEntry entry, RecipeType<UniversalProcessorRecipe> recipeType) {
         this.recipeType = recipeType;
         this.modEntry = entry;
-        this.title = __("block." + Main.MODID + "." + entry.name());
+        this.title = getMutableComponent("block." + Main.MODID + "." + entry.name());
 
         ItemCapDefinition itemCap = entry.itemCap();
         FluidCapDefinition fluidCap = entry.fluidCap();

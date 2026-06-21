@@ -3,6 +3,7 @@ package com.suhail.learning.util.caps;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 /**
  * Combines multiple IFluidHandler instances into a single view.
@@ -74,7 +75,7 @@ public class CombinedFluidHandler implements IFluidHandler {
     }
 
     @Override
-    public int fill(@NotNull FluidStack resource, FluidAction action) {
+    public int fill(@NotNull FluidStack resource, @NonNull FluidAction action) {
         if (resource.isEmpty()) return 0;
         for (IFluidHandler handler : fillable) {
             int filled = handler.fill(resource, action);
@@ -84,7 +85,7 @@ public class CombinedFluidHandler implements IFluidHandler {
     }
 
     @Override
-    public @NotNull FluidStack drain(@NotNull FluidStack resource, FluidAction action) {
+    public @NotNull FluidStack drain(@NotNull FluidStack resource, @NonNull FluidAction action) {
         if (resource.isEmpty()) return FluidStack.EMPTY;
         for (IFluidHandler handler : drainable) {
             FluidStack drained = handler.drain(resource, action);
@@ -94,7 +95,7 @@ public class CombinedFluidHandler implements IFluidHandler {
     }
 
     @Override
-    public @NotNull FluidStack drain(int maxDrain, FluidAction action) {
+    public @NotNull FluidStack drain(int maxDrain, @NonNull FluidAction action) {
         if (maxDrain <= 0) return FluidStack.EMPTY;
         for (IFluidHandler handler : drainable) {
             FluidStack drained = handler.drain(maxDrain, action);

@@ -1,5 +1,6 @@
 package com.suhail.learning.util;
 
+import com.mojang.logging.LogUtils;
 import com.suhail.learning.Main;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.*;
@@ -9,6 +10,7 @@ import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
 import org.jspecify.annotations.NonNull;
+import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,8 +23,9 @@ import java.util.concurrent.Executor;
 import static com.suhail.learning.Main.rlFromString;
 
 public class MultiblocksProvider implements PreparableReloadListener {
+    private static final Logger LOGGER = LogUtils.getLogger();
 
-    public static List<MultiblockStructure> structures = new ArrayList<>();
+    protected static List<MultiblockStructure> structures = new ArrayList<>();
     private static final MultiblocksProvider INSTANCE = new MultiblocksProvider();
 
     public static MultiblocksProvider getInstance() {
@@ -45,12 +48,11 @@ public class MultiblocksProvider implements PreparableReloadListener {
     }
 
     @Override
-    public @NonNull CompletableFuture<Void> reload(PreparationBarrier preparationBarrier, ResourceManager resourceManager,
-                                                   ProfilerFiller preparationsProfiler, ProfilerFiller reloadProfiler,
-                                                   Executor backgroundExecutor, Executor gameExecutor) {
-        return CompletableFuture.supplyAsync(() -> {
-            return loadMultiblockStructures(resourceManager);
-        }, backgroundExecutor).thenCompose(preparationBarrier::wait).thenAcceptAsync(loadedStructures -> {
+    public @NonNull CompletableFuture<Void> reload(PreparationBarrier preparationBarrier, @NonNull ResourceManager resourceManager,
+                                                   @NonNull ProfilerFiller preparationsProfiler, @NonNull ProfilerFiller reloadProfiler,
+                                                   @NonNull Executor backgroundExecutor, @NonNull Executor gameExecutor) {
+        return CompletableFuture.supplyAsync(() -> loadMultiblockStructures(resourceManager),
+                backgroundExecutor).thenCompose(preparationBarrier::wait).thenAcceptAsync(loadedStructures -> {
             structures.clear();
             structures.addAll(loadedStructures);
         }, gameExecutor);
@@ -78,14 +80,12 @@ public class MultiblocksProvider implements PreparableReloadListener {
                     String fileName = location.getPath().substring(location.getPath().lastIndexOf('/') + 1);
                     tmp.add(new MultiblockStructure(location, nbt, fileName));
                 } else {
-                    System.out.println("Skipping structure " + location + " due to missing blocks");
+                    LOGGER.info("Skipping structure {} due to missing blocks", location);
                 }
-
             } catch (IOException e) {
-                System.err.println("Failed to load structure from " + location + ": " + e.getMessage());
+                LOGGER.error("Failed to load structure from {} : {}", location, e.getMessage());
             }
         }
-
         return tmp;
     }
 
@@ -117,7 +117,7 @@ public class MultiblocksProvider implements PreparableReloadListener {
                     "structures/" + name + ".nbt");
             return new MultiblockStructure(rl, nbt, name + ".nbt");
         } catch (IOException e) {
-            System.err.println("Failed to load structure " + name + " from classpath: " + e.getMessage());
+            LOGGER.error("Failed to load structure {} from classpath: {}", name, e.getMessage());
             return null;
         }
     }
@@ -146,15 +146,14 @@ public class MultiblocksProvider implements PreparableReloadListener {
             try {
                 ResourceLocation blockLocation = rlFromString(blockId);
                 if (!BuiltInRegistries.BLOCK.containsKey(blockLocation)) {
-                    System.out.println("Missing block in structure: " + blockId);
+                    LOGGER.info("Missing block in structure: {} ", blockId);
                     return false;
                 }
             } catch (Exception e) {
-                System.err.println("Error validating block " + blockId + ": " + e.getMessage());
+                LOGGER.error("Error validation block {} : {}", blockId, e.getMessage());
                 return false;
             }
         }
-
         return true;
     }
 
