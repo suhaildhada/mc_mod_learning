@@ -20,15 +20,17 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import java.lang.reflect.Field;
 import java.util.List;
 
-public class PacketAE2PatternTransfer implements CustomPacketPayload {
+public record PacketAE2PatternTransfer(List<ItemStack> inputItems, List<FluidStack> inputFluids,
+                                       List<ItemStack> outputItems,
+                                       List<FluidStack> outputFluids) implements CustomPacketPayload {
     public static final Type<PacketAE2PatternTransfer> TYPE = new Type<>(Main.rl("ae2_pattern_transfer"));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, PacketAE2PatternTransfer> STREAM_CODEC = StreamCodec.composite(
-        ItemStack.STREAM_CODEC.apply(ByteBufCodecs.list()), PacketAE2PatternTransfer::inputItems,
-        FluidStack.STREAM_CODEC.apply(ByteBufCodecs.list()), PacketAE2PatternTransfer::inputFluids,
-        ItemStack.STREAM_CODEC.apply(ByteBufCodecs.list()), PacketAE2PatternTransfer::outputItems,
-        FluidStack.STREAM_CODEC.apply(ByteBufCodecs.list()), PacketAE2PatternTransfer::outputFluids,
-        PacketAE2PatternTransfer::new
+            ItemStack.STREAM_CODEC.apply(ByteBufCodecs.list()), PacketAE2PatternTransfer::inputItems,
+            FluidStack.STREAM_CODEC.apply(ByteBufCodecs.list()), PacketAE2PatternTransfer::inputFluids,
+            ItemStack.STREAM_CODEC.apply(ByteBufCodecs.list()), PacketAE2PatternTransfer::outputItems,
+            FluidStack.STREAM_CODEC.apply(ByteBufCodecs.list()), PacketAE2PatternTransfer::outputFluids,
+            PacketAE2PatternTransfer::new
     );
 
     private static final Field encodingLogicField;
@@ -42,28 +44,10 @@ public class PacketAE2PatternTransfer implements CustomPacketPayload {
         }
     }
 
-    private final List<ItemStack> inputItems;
-    private final List<FluidStack> inputFluids;
-    private final List<ItemStack> outputItems;
-    private final List<FluidStack> outputFluids;
-
-    public PacketAE2PatternTransfer(List<ItemStack> inputItems, List<FluidStack> inputFluids,
-                                    List<ItemStack> outputItems, List<FluidStack> outputFluids) {
-        this.inputItems = inputItems;
-        this.inputFluids = inputFluids;
-        this.outputItems = outputItems;
-        this.outputFluids = outputFluids;
-    }
-
     @Override
     public Type<? extends CustomPacketPayload> type() {
         return TYPE;
     }
-
-    public List<ItemStack> inputItems() { return inputItems; }
-    public List<FluidStack> inputFluids() { return inputFluids; }
-    public List<ItemStack> outputItems() { return outputItems; }
-    public List<FluidStack> outputFluids() { return outputFluids; }
 
     public void handle(IPayloadContext context) {
         context.enqueueWork(() -> {

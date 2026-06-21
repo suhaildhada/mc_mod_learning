@@ -54,7 +54,7 @@ public class JEI2PatternEncoderTransfer implements IRecipeTransferHandler<Patter
         List<ItemStack> outputItems = new ArrayList<>();
         List<FluidStack> outputFluids = new ArrayList<>();
 
-        for (SizedIngredient si : recipe.getItemInputs()) {
+        for (SizedIngredient si : recipe.itemInputs()) {
             if (!si.ingredient().isEmpty()) {
                 ItemStack stack = si.ingredient().getItems()[0].copy();
                 stack.setCount(si.count());
@@ -62,7 +62,7 @@ public class JEI2PatternEncoderTransfer implements IRecipeTransferHandler<Patter
             }
         }
 
-        for (SizedFluidIngredient sfi : recipe.getFluidInputs()) {
+        for (SizedFluidIngredient sfi : recipe.fluidInputs()) {
             if (!sfi.ingredient().isEmpty()) {
                 FluidStack fluid = sfi.getFluids()[0].copy();
                 fluid.setAmount(sfi.amount());
@@ -70,9 +70,9 @@ public class JEI2PatternEncoderTransfer implements IRecipeTransferHandler<Patter
             }
         }
 
-        outputItems.addAll(recipe.getItemOutputs());
+        outputItems.addAll(recipe.itemOutputs());
 
-        outputFluids.addAll(recipe.getFluidOutputs());
+        outputFluids.addAll(recipe.fluidOutputs());
 
         PacketDistributor.sendToServer(new PacketAE2PatternTransfer(inputItems, inputFluids, outputItems, outputFluids));
         return null;

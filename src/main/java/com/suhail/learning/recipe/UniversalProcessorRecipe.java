@@ -20,33 +20,10 @@ import java.util.List;
  * Each processor registers its own RecipeType and RecipeSerializer,
  * but they all share this single Recipe implementation.
  */
-public class UniversalProcessorRecipe implements Recipe<ProcessorRecipeInput> {
-
-    private final String processorName;
-    private final List<SizedIngredient> itemInputs;
-    private final List<SizedFluidIngredient> fluidInputs;
-    private final List<ItemStack> itemOutputs;
-    private final List<FluidStack> fluidOutputs;
-    private final int processTime;
-    private final int energyPerTick;
-
-    public UniversalProcessorRecipe(
-            String processorName,
-            List<SizedIngredient> itemInputs,
-            List<SizedFluidIngredient> fluidInputs,
-            List<ItemStack> itemOutputs,
-            List<FluidStack> fluidOutputs,
-            int processTime,
-            int energyPerTick
-    ) {
-        this.processorName = processorName;
-        this.itemInputs = itemInputs;
-        this.fluidInputs = fluidInputs;
-        this.itemOutputs = itemOutputs;
-        this.fluidOutputs = fluidOutputs;
-        this.processTime = processTime;
-        this.energyPerTick = energyPerTick;
-    }
+public record UniversalProcessorRecipe(String processorName, List<SizedIngredient> itemInputs,
+                                       List<SizedFluidIngredient> fluidInputs, List<ItemStack> itemOutputs,
+                                       List<FluidStack> fluidOutputs, int processTime,
+                                       int energyPerTick) implements Recipe<ProcessorRecipeInput> {
 
     @Override
     public boolean matches(ProcessorRecipeInput input, Level level) {
@@ -107,34 +84,6 @@ public class UniversalProcessorRecipe implements Recipe<ProcessorRecipeInput> {
     }
 
     // --- Getters ---
-
-    public String getProcessorName() {
-        return processorName;
-    }
-
-    public List<SizedIngredient> getItemInputs() {
-        return itemInputs;
-    }
-
-    public List<SizedFluidIngredient> getFluidInputs() {
-        return fluidInputs;
-    }
-
-    public List<ItemStack> getItemOutputs() {
-        return itemOutputs;
-    }
-
-    public List<FluidStack> getFluidOutputs() {
-        return fluidOutputs;
-    }
-
-    public int getProcessTime() {
-        return processTime;
-    }
-
-    public int getEnergyPerTick() {
-        return energyPerTick;
-    }
 
     public boolean isComplete() {
         for (SizedIngredient si : itemInputs) {

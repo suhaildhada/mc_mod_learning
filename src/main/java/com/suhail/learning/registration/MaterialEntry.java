@@ -106,26 +106,92 @@ public class MaterialEntry {
         return this;
     }
 
-    public MaterialEntry noIngot() { this.ingotSupplier = null; return this; }
-    public MaterialEntry noGem() { this.gemSupplier = null; return this; }
-    public MaterialEntry noBlock() { this.storageBlockSupplier = null; this.storageItemSupplier = null; return this; }
-    public MaterialEntry noOre() { this.oreBlockSupplier = null; this.oreItemSupplier = null; return this; }
-    public MaterialEntry noDust() { this.dustSupplier = null; return this; }
-    public MaterialEntry noNugget() { this.nuggetSupplier = null; return this; }
-    public MaterialEntry noRawOre() { this.rawOreSupplier = null; return this; }
-    public MaterialEntry noPlate() { this.plateSupplier = null; return this; }
-    public MaterialEntry noFluid() { this.fluidDefinition = null; return this; }
+    public MaterialEntry noIngot() {
+        this.ingotSupplier = null;
+        return this;
+    }
 
-    public boolean hasIngot() { return ingotSupplier != null; }
-    public boolean hasGem() { return gemSupplier != null; }
-    public boolean hasBlock() { return storageBlockSupplier != null; }
-    public boolean hasOre() { return oreBlockSupplier != null; }
-    public boolean hasDust() { return dustSupplier != null; }
-    public boolean hasNugget() { return nuggetSupplier != null; }
-    public boolean hasRawOre() { return rawOreSupplier != null; }
-    public boolean hasPlate() { return plateSupplier != null; }
-    public boolean hasFluid() { return fluidDefinition != null; }
-    public boolean hasWorldgenConfig() { return worldgenQty > 0; }
+    public MaterialEntry noGem() {
+        this.gemSupplier = null;
+        return this;
+    }
+
+    public MaterialEntry noBlock() {
+        this.storageBlockSupplier = null;
+        this.storageItemSupplier = null;
+        return this;
+    }
+
+    public MaterialEntry noOre() {
+        this.oreBlockSupplier = null;
+        this.oreItemSupplier = null;
+        return this;
+    }
+
+    public MaterialEntry noDust() {
+        this.dustSupplier = null;
+        return this;
+    }
+
+    public MaterialEntry noNugget() {
+        this.nuggetSupplier = null;
+        return this;
+    }
+
+    public MaterialEntry noRawOre() {
+        this.rawOreSupplier = null;
+        return this;
+    }
+
+    public MaterialEntry noPlate() {
+        this.plateSupplier = null;
+        return this;
+    }
+
+    public MaterialEntry noFluid() {
+        this.fluidDefinition = null;
+        return this;
+    }
+
+    public boolean hasIngot() {
+        return ingotSupplier != null;
+    }
+
+    public boolean hasGem() {
+        return gemSupplier != null;
+    }
+
+    public boolean hasBlock() {
+        return storageBlockSupplier != null;
+    }
+
+    public boolean hasOre() {
+        return oreBlockSupplier != null;
+    }
+
+    public boolean hasDust() {
+        return dustSupplier != null;
+    }
+
+    public boolean hasNugget() {
+        return nuggetSupplier != null;
+    }
+
+    public boolean hasRawOre() {
+        return rawOreSupplier != null;
+    }
+
+    public boolean hasPlate() {
+        return plateSupplier != null;
+    }
+
+    public boolean hasFluid() {
+        return fluidDefinition != null;
+    }
+
+    public boolean hasWorldgenConfig() {
+        return worldgenQty > 0;
+    }
 
     public MaterialEntry worldgenConfig(int minHeight, int maxHeight, int qty) {
         this.worldgenMinHeight = minHeight;
@@ -134,18 +200,53 @@ public class MaterialEntry {
         return this;
     }
 
-    public DeferredBlock<Block> oreBlock() { return entry.oreBlock(); }
-    public DeferredBlock<Block> storageBlock() { return entry.storageBlock(); }
-    public DeferredItem<Item> ingot() { return entry.ingot(); }
-    public DeferredItem<Item> gem() { return entry.gem(); }
-    public DeferredItem<Item> rawOre() { return entry.rawOre(); }
-    public DeferredItem<BlockItem> oreItem() { return entry.oreItem(); }
-    public DeferredItem<BlockItem> storageItem() { return entry.storageItem(); }
-    public DeferredItem<Item> dust() { return entry.dust(); }
-    public DeferredItem<Item> plate() { return entry.plate(); }
-    public DeferredItem<Item> nugget() { return entry.nugget(); }
-    public DeferredItem<Item> bucket() { return entry.bucket(); }
-    public MaterialFluid materialFluid() { return entry.materialFluid(); }
+    public DeferredBlock<Block> oreBlock() {
+        return entry.oreBlock();
+    }
+
+    public DeferredBlock<Block> storageBlock() {
+        return entry.storageBlock();
+    }
+
+    public DeferredItem<Item> ingot() {
+        return entry.ingot();
+    }
+
+    public DeferredItem<Item> gem() {
+        return entry.gem();
+    }
+
+    public DeferredItem<Item> rawOre() {
+        return entry.rawOre();
+    }
+
+    public DeferredItem<BlockItem> oreItem() {
+        return entry.oreItem();
+    }
+
+    public DeferredItem<BlockItem> storageItem() {
+        return entry.storageItem();
+    }
+
+    public DeferredItem<Item> dust() {
+        return entry.dust();
+    }
+
+    public DeferredItem<Item> plate() {
+        return entry.plate();
+    }
+
+    public DeferredItem<Item> nugget() {
+        return entry.nugget();
+    }
+
+    public DeferredItem<Item> bucket() {
+        return entry.bucket();
+    }
+
+    public MaterialFluid materialFluid() {
+        return entry.materialFluid();
+    }
 
     public MaterialEntry metalOre() {
         BlockBehaviour.Properties oreProps = BlockBehaviour.Properties.of()
@@ -159,7 +260,7 @@ public class MaterialEntry {
                 .requiresCorrectToolForDrops()
                 .sound(SoundType.METAL);
 
-        this.setOre(() -> new Block(oreProps),() -> new BlockItem(new Block(oreProps), new Item.Properties()));
+        this.setOre(() -> new Block(oreProps), () -> new BlockItem(new Block(oreProps), new Item.Properties()));
 
         this.setIngotSupplier(() -> new Item(new Item.Properties()));
         this.setDustSupplier(() -> new Item(new Item.Properties()));
@@ -188,7 +289,7 @@ public class MaterialEntry {
                 .requiresCorrectToolForDrops()
                 .sound(SoundType.AMETHYST_CLUSTER);
 
-        this.setOre(() -> new Block(oreProps),() -> new BlockItem(new Block(oreProps), new Item.Properties()));
+        this.setOre(() -> new Block(oreProps), () -> new BlockItem(new Block(oreProps), new Item.Properties()));
 
         this.setGemSupplier(() -> new Item(new Item.Properties()));
         this.setDustSupplier(() -> new Item(new Item.Properties()));
@@ -267,15 +368,14 @@ public class MaterialEntry {
         String fluidName = def.isMolten ? "molten_" + name : name + "_fluid";
 
         // Register the FluidType
-        DeferredHolder<FluidType, FluidType> fluidType = (DeferredHolder<FluidType, FluidType>)
-                (DeferredHolder<?, ?>) FLUID_TYPES.register(fluidName, () -> new MaterialFluidType(
-                        FluidType.Properties.create()
-                                .temperature(def.temperature)
-                                .density(def.density)
-                                .viscosity(def.viscosity)
-                                .lightLevel(def.luminosity),
-                        color
-                ));
+        DeferredHolder<FluidType, FluidType> fluidType = FLUID_TYPES.register(fluidName, () -> new MaterialFluidType(
+                FluidType.Properties.create()
+                        .temperature(def.temperature)
+                        .density(def.density)
+                        .viscosity(def.viscosity)
+                        .lightLevel(def.luminosity),
+                color
+        ));
 
         // Array holders to break circular reference between source <-> flowing
         final DeferredHolder<Fluid, FlowingFluid>[] sourceHolder = new DeferredHolder[1];
@@ -291,25 +391,22 @@ public class MaterialEntry {
         ).block(() -> blockHolder[0].get()).bucket(() -> bucketHolder[0].get());
 
         // Register source and flowing fluids
-        sourceHolder[0] = (DeferredHolder<Fluid, FlowingFluid>)
-                (DeferredHolder<?, ?>) FLUIDS.register(fluidName,
-                        () -> new BaseFlowingFluid.Source(propsSupplier.get()));
+        sourceHolder[0] = FLUIDS.register(fluidName,
+                () -> new BaseFlowingFluid.Source(propsSupplier.get()));
 
-        flowingHolder[0] = (DeferredHolder<Fluid, FlowingFluid>)
-                (DeferredHolder<?, ?>) FLUIDS.register("flowing_" + fluidName,
-                        () -> new BaseFlowingFluid.Flowing(propsSupplier.get()));
+        flowingHolder[0] = FLUIDS.register("flowing_" + fluidName,
+                () -> new BaseFlowingFluid.Flowing(propsSupplier.get()));
 
         // Register fluid block
-        blockHolder[0] = (DeferredBlock<LiquidBlock>)
-                (DeferredBlock<?>) BLOCKS.register(fluidName + "_block", () -> new LiquidBlock(
-                        sourceHolder[0].get(),
-                        BlockBehaviour.Properties.of()
-                                .noCollission()
-                                .strength(100.0F)
-                                .noLootTable()
-                                .liquid()
-                                .replaceable()
-                ));
+        blockHolder[0] = BLOCKS.register(fluidName + "_block", () -> new LiquidBlock(
+                sourceHolder[0].get(),
+                BlockBehaviour.Properties.of()
+                        .noCollission()
+                        .strength(100.0F)
+                        .noLootTable()
+                        .liquid()
+                        .replaceable()
+        ));
 
         // Register bucket item
         bucketHolder[0] = ITEMS.register(fluidName + "_bucket", () -> new BucketItem(
@@ -343,15 +440,44 @@ public class MaterialEntry {
             DeferredItem<Item> bucket,
             MaterialFluid materialFluid
     ) {
-        public boolean hasOre() { return oreBlock != null; }
-        public boolean hasBlock() { return storageBlock != null; }
-        public boolean hasIngot() { return ingot != null; }
-        public boolean hasGem() { return gem != null; }
-        public boolean hasRawOre() { return rawOre != null; }
-        public boolean hasDust() { return dust != null; }
-        public boolean hasPlate() { return plate != null; }
-        public boolean hasNugget() { return nugget != null; }
-        public boolean hasBucket() { return bucket != null; }
-        public boolean hasFluid() { return materialFluid != null; }
+        public boolean hasOre() {
+            return oreBlock != null;
+        }
+
+        public boolean hasBlock() {
+            return storageBlock != null;
+        }
+
+        public boolean hasIngot() {
+            return ingot != null;
+        }
+
+        public boolean hasGem() {
+            return gem != null;
+        }
+
+        public boolean hasRawOre() {
+            return rawOre != null;
+        }
+
+        public boolean hasDust() {
+            return dust != null;
+        }
+
+        public boolean hasPlate() {
+            return plate != null;
+        }
+
+        public boolean hasNugget() {
+            return nugget != null;
+        }
+
+        public boolean hasBucket() {
+            return bucket != null;
+        }
+
+        public boolean hasFluid() {
+            return materialFluid != null;
+        }
     }
 }

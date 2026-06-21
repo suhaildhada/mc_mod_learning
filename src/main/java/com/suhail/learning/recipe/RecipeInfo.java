@@ -1,7 +1,11 @@
 package com.suhail.learning.recipe;
 
 import com.suhail.learning.block_entity.GlobalBlockEntity;
+import com.suhail.learning.registration.ModEntry;
+import com.suhail.learning.setup.ModEntries;
 import com.suhail.learning.util.ClientUtil;
+import com.suhail.learning.util.caps.FluidCapDefinition;
+import com.suhail.learning.util.caps.ItemCapDefinition;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
@@ -15,11 +19,6 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
-
-import com.suhail.learning.registration.ModEntry;
-import com.suhail.learning.setup.ModEntries;
-import com.suhail.learning.util.caps.ItemCapDefinition;
-import com.suhail.learning.util.caps.FluidCapDefinition;
 
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +38,7 @@ public class RecipeInfo {
     public int multiplier = 1;
     public Recipe<?> recipe;
     public Recipe<?> lastRecipe;
-    private HashMap<String, Recipe<?>> allRecipes = new HashMap<>();
+    private final HashMap<String, Recipe<?>> allRecipes = new HashMap<>();
 
     public RecipeInfo(GlobalBlockEntity be) {
         this.be = be;
@@ -75,17 +74,17 @@ public class RecipeInfo {
             return; // no energy storage, cannot process
         }
         int required = energyPerTick * multiplier;
-        if(required > 0) {
+        if (required > 0) {
             int extracted = be.energyStorage.getEnergyStored() >= required ? required : 0;
             if (extracted < required) {
                 return; // not enough energy, stall
             }
             be.energyStorage.drainEnergy(required);
-        } else  {
-            be.energyStorage.setEnergyStored(be.energyStorage.getEnergyStored()-required);
+        } else {
+            be.energyStorage.setEnergyStored(be.energyStorage.getEnergyStored() - required);
         }
 
-        ticks+=multiplier;
+        ticks += multiplier;
         be.progress = getProgress();
         changed = true;
 
@@ -109,8 +108,8 @@ public class RecipeInfo {
         ItemCapDefinition itemCap = entry.itemCap();
         FluidCapDefinition fluidCap = entry.fluidCap();
 
-        List<ItemStack> itemOutputs = upr.getItemOutputs();
-        List<FluidStack> fluidOutputs = upr.getFluidOutputs();
+        List<ItemStack> itemOutputs = upr.itemOutputs();
+        List<FluidStack> fluidOutputs = upr.fluidOutputs();
 
         // Determine output slot range: output slots start right after input slots
         int outputSlotStart = (itemCap != null) ? itemCap.inputSlots : 0;
@@ -182,7 +181,7 @@ public class RecipeInfo {
         if (!(recipe instanceof UniversalProcessorRecipe upr)) return;
 
         // Consume item inputs
-        List<SizedIngredient> itemInputs = upr.getItemInputs();
+        List<SizedIngredient> itemInputs = upr.itemInputs();
         if (be.contentHandler.hasItemCapability()) {
             var itemHandler = be.contentHandler.getItemHandler();
             for (int i = 0; i < itemInputs.size(); i++) {
@@ -192,7 +191,7 @@ public class RecipeInfo {
         }
 
         // Consume fluid inputs
-        List<SizedFluidIngredient> fluidInputs = upr.getFluidInputs();
+        List<SizedFluidIngredient> fluidInputs = upr.fluidInputs();
         if (be.contentHandler.hasFluidCapability()) {
             var fluidHandler = be.contentHandler.getFluidHandler();
             for (int i = 0; i < fluidInputs.size(); i++) {
@@ -204,7 +203,7 @@ public class RecipeInfo {
     }
 
     private void findRecipe() {
-        if(lastRecipe != null) {
+        if (lastRecipe != null) {
             if (isValidRecipe(lastRecipe)) {
                 setRecipe(lastRecipe);
                 return;
@@ -231,8 +230,8 @@ public class RecipeInfo {
         }
         clear();
         if (recipe instanceof UniversalProcessorRecipe upr) {
-            this.ticksNeeded = upr.getProcessTime();
-            this.energyPerTick = upr.getEnergyPerTick();
+            this.ticksNeeded = upr.processTime();
+            this.energyPerTick = upr.energyPerTick();
         }
         consumeInputs();
     }
@@ -248,7 +247,7 @@ public class RecipeInfo {
     }
 
     public int getProgress() {
-        return (int) ((double)ticks / ticksNeeded * 100);
+        return (int) ((double) ticks / ticksNeeded * 100);
     }
 
     public void clear() {
@@ -259,7 +258,7 @@ public class RecipeInfo {
     }
 
     public Recipe<?> recipe() {
-        if(recipe == null && recipeId != null && !recipeId.isEmpty()) {
+        if (recipe == null && recipeId != null && !recipeId.isEmpty()) {
             recipe = getRecipeFromTag(recipeId);
         }
         return recipe;
@@ -267,7 +266,7 @@ public class RecipeInfo {
 
     @SuppressWarnings("unchecked")
     public HashMap<String, Recipe<?>> getRecipes() {
-        if(allRecipes.isEmpty()) {
+        if (allRecipes.isEmpty()) {
             Level level = getLevel();
             if (level != null) {
                 ModEntry entry = ModEntries.get(be.name);
@@ -286,11 +285,11 @@ public class RecipeInfo {
 
     private Recipe<?> getRecipeFromTag(String recipe) {
         Recipe<?> cachedRecipe = getRecipes().getOrDefault(recipe, null);
-        if(cachedRecipe != null) {
+        if (cachedRecipe != null) {
             return cachedRecipe;
         }
         ResourceLocation id = rlFromString(recipe);
-        if(getLevel() == null) return null;
+        if (getLevel() == null) return null;
         try {
             return getLevel().getRecipeManager().byKey(id).get().value();
         } catch (NoSuchElementException e) {
@@ -298,9 +297,8 @@ public class RecipeInfo {
         }
     }
 
-    private Level getLevel()
-    {
-        if(be != null) return be.getLevel();
+    private Level getLevel() {
+        if (be != null) return be.getLevel();
         return switch (FMLEnvironment.dist) {
             case CLIENT -> ClientUtil.tryGetClientWorld();
             case DEDICATED_SERVER -> ServerLifecycleHooks.getCurrentServer().overworld();
@@ -312,20 +310,20 @@ public class RecipeInfo {
         data.putInt("ticks", ticks);
         data.putInt("ticksNeeded", ticksNeeded);
         data.putInt("energyPerTick", energyPerTick);
-        if(recipe != null && recipeId != null) {
+        if (recipe != null && recipeId != null) {
             data.putString("recipe", recipeId);
         }
         return data;
     }
 
     public void load(Tag nbt) {
-        if(nbt instanceof CompoundTag) {
+        if (nbt instanceof CompoundTag) {
             ticks = ((CompoundTag) nbt).getInt("ticks");
             ticksNeeded = ((CompoundTag) nbt).getInt("ticksNeeded");
             energyPerTick = ((CompoundTag) nbt).getInt("energyPerTick");
             recipeId = ((CompoundTag) nbt).getString("recipe");
             recipe = null;
-            if(!recipeId.isEmpty()) {
+            if (!recipeId.isEmpty()) {
                 recipe = getRecipeFromTag(recipeId);
             }
         }

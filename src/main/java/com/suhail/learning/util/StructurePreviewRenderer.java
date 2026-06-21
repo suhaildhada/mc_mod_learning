@@ -36,7 +36,8 @@ public final class StructurePreviewRenderer {
     private static boolean rmbPrev = false;
     private static int sliceLevel = -1;
 
-    private StructurePreviewRenderer() {}
+    private StructurePreviewRenderer() {
+    }
 
     public static void render(GuiGraphics graphics, MultiblockStructure structure,
                               int x, int y, int width, int height,
@@ -49,7 +50,7 @@ public final class StructurePreviewRenderer {
         int maxDim = Math.max(sw, Math.max(sh, sd));
         if (maxDim <= 0) return;
 
-        float scale = Math.min(width, height) / (float) (maxDim * 1.8f);
+        float scale = Math.min(width, height) / (maxDim * 1.8f);
 
         updateDragRotation(x, y, width, height, mouseX, mouseY);
         updateSlice(x, y, width, height, mouseX, mouseY, sh);
@@ -103,7 +104,7 @@ public final class StructurePreviewRenderer {
     }
 
     private static void updateDragRotation(int x, int y, int width, int height,
-                                            double mouseX, double mouseY) {
+                                           double mouseX, double mouseY) {
         Minecraft mc = Minecraft.getInstance();
         long window = mc.getWindow().getWindow();
         boolean lmbDown = GLFW.glfwGetMouseButton(window, GLFW.GLFW_MOUSE_BUTTON_LEFT) == GLFW.GLFW_PRESS;
@@ -134,7 +135,7 @@ public final class StructurePreviewRenderer {
     }
 
     private static void updateSlice(int x, int y, int width, int height,
-                                     double mouseX, double mouseY, int sh) {
+                                    double mouseX, double mouseY, int sh) {
         Minecraft mc = Minecraft.getInstance();
         long window = mc.getWindow().getWindow();
         boolean rmbDown = GLFW.glfwGetMouseButton(window, GLFW.GLFW_MOUSE_BUTTON_RIGHT) == GLFW.GLFW_PRESS;

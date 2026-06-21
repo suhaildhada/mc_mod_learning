@@ -9,11 +9,11 @@ import static com.suhail.learning.setup.Registers.ITEMS;
 
 public class ToolSetEntry {
 
-    public static final BiFunction<Tier, Item.Properties, ? extends Item> DEFAULT_SWORD   = SwordItem::new;
+    public static final BiFunction<Tier, Item.Properties, ? extends Item> DEFAULT_SWORD = SwordItem::new;
     public static final BiFunction<Tier, Item.Properties, ? extends Item> DEFAULT_PICKAXE = PickaxeItem::new;
-    public static final BiFunction<Tier, Item.Properties, ? extends Item> DEFAULT_AXE     = AxeItem::new;
-    public static final BiFunction<Tier, Item.Properties, ? extends Item> DEFAULT_SHOVEL  = ShovelItem::new;
-    public static final BiFunction<Tier, Item.Properties, ? extends Item> DEFAULT_HOE     = HoeItem::new;
+    public static final BiFunction<Tier, Item.Properties, ? extends Item> DEFAULT_AXE = AxeItem::new;
+    public static final BiFunction<Tier, Item.Properties, ? extends Item> DEFAULT_SHOVEL = ShovelItem::new;
+    public static final BiFunction<Tier, Item.Properties, ? extends Item> DEFAULT_HOE = HoeItem::new;
 
     public final String name;
     private DeferredItem<Item> sword;
@@ -38,22 +38,36 @@ public class ToolSetEntry {
                                      BiFunction<Tier, Item.Properties, ? extends Item> shovelFactory,
                                      BiFunction<Tier, Item.Properties, ? extends Item> hoeFactory) {
         ToolSetEntry e = new ToolSetEntry(name);
-        BiFunction<Tier, Item.Properties, ? extends Item> sf = swordFactory   != null ? swordFactory   : DEFAULT_SWORD;
+        BiFunction<Tier, Item.Properties, ? extends Item> sf = swordFactory != null ? swordFactory : DEFAULT_SWORD;
         BiFunction<Tier, Item.Properties, ? extends Item> pf = pickaxeFactory != null ? pickaxeFactory : DEFAULT_PICKAXE;
-        BiFunction<Tier, Item.Properties, ? extends Item> af = axeFactory     != null ? axeFactory     : DEFAULT_AXE;
-        BiFunction<Tier, Item.Properties, ? extends Item> shf = shovelFactory != null ? shovelFactory  : DEFAULT_SHOVEL;
-        BiFunction<Tier, Item.Properties, ? extends Item> hf = hoeFactory     != null ? hoeFactory     : DEFAULT_HOE;
-        e.sword   = (DeferredItem<Item>) ITEMS.register(name + "_sword",   () -> sf.apply(tier, new Item.Properties()));
-        e.pickaxe = (DeferredItem<Item>) ITEMS.register(name + "_pickaxe", () -> pf.apply(tier, new Item.Properties()));
-        e.axe     = (DeferredItem<Item>) ITEMS.register(name + "_axe",     () -> af.apply(tier, new Item.Properties()));
-        e.shovel  = (DeferredItem<Item>) ITEMS.register(name + "_shovel",  () -> shf.apply(tier, new Item.Properties()));
-        e.hoe     = (DeferredItem<Item>) ITEMS.register(name + "_hoe",     () -> hf.apply(tier, new Item.Properties()));
+        BiFunction<Tier, Item.Properties, ? extends Item> af = axeFactory != null ? axeFactory : DEFAULT_AXE;
+        BiFunction<Tier, Item.Properties, ? extends Item> shf = shovelFactory != null ? shovelFactory : DEFAULT_SHOVEL;
+        BiFunction<Tier, Item.Properties, ? extends Item> hf = hoeFactory != null ? hoeFactory : DEFAULT_HOE;
+        e.sword = ITEMS.register(name + "_sword", () -> sf.apply(tier, new Item.Properties()));
+        e.pickaxe = ITEMS.register(name + "_pickaxe", () -> pf.apply(tier, new Item.Properties()));
+        e.axe = ITEMS.register(name + "_axe", () -> af.apply(tier, new Item.Properties()));
+        e.shovel = ITEMS.register(name + "_shovel", () -> shf.apply(tier, new Item.Properties()));
+        e.hoe = ITEMS.register(name + "_hoe", () -> hf.apply(tier, new Item.Properties()));
         return e;
     }
 
-    public DeferredItem<Item> sword()   { return sword; }
-    public DeferredItem<Item> pickaxe() { return pickaxe; }
-    public DeferredItem<Item> axe()     { return axe; }
-    public DeferredItem<Item> shovel()  { return shovel; }
-    public DeferredItem<Item> hoe()     { return hoe; }
+    public DeferredItem<Item> sword() {
+        return sword;
+    }
+
+    public DeferredItem<Item> pickaxe() {
+        return pickaxe;
+    }
+
+    public DeferredItem<Item> axe() {
+        return axe;
+    }
+
+    public DeferredItem<Item> shovel() {
+        return shovel;
+    }
+
+    public DeferredItem<Item> hoe() {
+        return hoe;
+    }
 }

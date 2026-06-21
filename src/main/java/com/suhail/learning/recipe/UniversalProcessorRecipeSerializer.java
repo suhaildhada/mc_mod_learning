@@ -30,22 +30,22 @@ public class UniversalProcessorRecipeSerializer implements RecipeSerializer<Univ
         this.codec = RecordCodecBuilder.mapCodec(inst -> inst.group(
                 SizedIngredient.FLAT_CODEC.listOf()
                         .optionalFieldOf("item_inputs", List.of())
-                        .forGetter(UniversalProcessorRecipe::getItemInputs),
+                        .forGetter(UniversalProcessorRecipe::itemInputs),
                 SizedFluidIngredient.FLAT_CODEC.listOf()
                         .optionalFieldOf("fluid_inputs", List.of())
-                        .forGetter(UniversalProcessorRecipe::getFluidInputs),
+                        .forGetter(UniversalProcessorRecipe::fluidInputs),
                 ItemStack.CODEC.listOf()
                         .optionalFieldOf("item_outputs", List.of())
-                        .forGetter(UniversalProcessorRecipe::getItemOutputs),
+                        .forGetter(UniversalProcessorRecipe::itemOutputs),
                 FluidStack.CODEC.listOf()
                         .optionalFieldOf("fluid_outputs", List.of())
-                        .forGetter(UniversalProcessorRecipe::getFluidOutputs),
+                        .forGetter(UniversalProcessorRecipe::fluidOutputs),
                 Codec.INT
                         .fieldOf("process_time")
-                        .forGetter(UniversalProcessorRecipe::getProcessTime),
+                        .forGetter(UniversalProcessorRecipe::processTime),
                 Codec.INT
                         .fieldOf("energy_per_tick")
-                        .forGetter(UniversalProcessorRecipe::getEnergyPerTick)
+                        .forGetter(UniversalProcessorRecipe::energyPerTick)
         ).apply(inst, (itemIn, fluidIn, itemOut, fluidOut, time, energy) ->
                 new UniversalProcessorRecipe(processorName, itemIn, fluidIn, itemOut, fluidOut, time, energy)
         ));
@@ -75,12 +75,12 @@ public class UniversalProcessorRecipeSerializer implements RecipeSerializer<Univ
 
             @Override
             public void encode(RegistryFriendlyByteBuf buf, UniversalProcessorRecipe recipe) {
-                ITEM_INPUT_LIST.encode(buf, recipe.getItemInputs());
-                FLUID_INPUT_LIST.encode(buf, recipe.getFluidInputs());
-                ITEM_OUTPUT_LIST.encode(buf, recipe.getItemOutputs());
-                FLUID_OUTPUT_LIST.encode(buf, recipe.getFluidOutputs());
-                buf.writeVarInt(recipe.getProcessTime());
-                buf.writeVarInt(recipe.getEnergyPerTick());
+                ITEM_INPUT_LIST.encode(buf, recipe.itemInputs());
+                FLUID_INPUT_LIST.encode(buf, recipe.fluidInputs());
+                ITEM_OUTPUT_LIST.encode(buf, recipe.itemOutputs());
+                FLUID_OUTPUT_LIST.encode(buf, recipe.fluidOutputs());
+                buf.writeVarInt(recipe.processTime());
+                buf.writeVarInt(recipe.energyPerTick());
             }
         };
     }

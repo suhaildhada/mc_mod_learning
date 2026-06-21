@@ -47,12 +47,12 @@ public class SlotModePair {
 
     // pack slotMode and slot into one int
     public int pack() {
-        return slotMode.ordinal()*100+slot;
+        return slotMode.ordinal() * 100 + slot;
     }
 
     public static SlotModePair unpack(int packedValue) {
-        int slotMode = packedValue/100;
-        int slot = packedValue%100;
+        int slotMode = packedValue / 100;
+        int slot = packedValue % 100;
         return new SlotModePair(slotMode, slot);
     }
 
@@ -68,7 +68,7 @@ public class SlotModePair {
         PUSH(0x80C9BF38),
         DISABLED(0x80000000);
 
-        private int color;
+        private final int color;
 
         SlotMode(int color) {
             this.color = color;

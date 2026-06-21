@@ -8,6 +8,7 @@ import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
+import org.jspecify.annotations.NonNull;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,7 +23,7 @@ import static com.suhail.learning.Main.rlFromString;
 public class MultiblocksProvider implements PreparableReloadListener {
 
     public static List<MultiblockStructure> structures = new ArrayList<>();
-    private static MultiblocksProvider INSTANCE = new MultiblocksProvider();
+    private static final MultiblocksProvider INSTANCE = new MultiblocksProvider();
 
     public static MultiblocksProvider getInstance() {
         return INSTANCE;
@@ -31,9 +32,10 @@ public class MultiblocksProvider implements PreparableReloadListener {
     public static List<MultiblockStructure> getStructures() {
         return structures;
     }
-    
+
     /**
      * Sets the structures list. Used for client-side synchronization.
+     *
      * @param newStructures The new structures to set
      */
     public static void setStructures(List<MultiblockStructure> newStructures) {
@@ -43,9 +45,9 @@ public class MultiblocksProvider implements PreparableReloadListener {
     }
 
     @Override
-    public CompletableFuture<Void> reload(PreparationBarrier preparationBarrier, ResourceManager resourceManager, 
-                                          ProfilerFiller preparationsProfiler, ProfilerFiller reloadProfiler, 
-                                          Executor backgroundExecutor, Executor gameExecutor) {
+    public @NonNull CompletableFuture<Void> reload(PreparationBarrier preparationBarrier, ResourceManager resourceManager,
+                                                   ProfilerFiller preparationsProfiler, ProfilerFiller reloadProfiler,
+                                                   Executor backgroundExecutor, Executor gameExecutor) {
         return CompletableFuture.supplyAsync(() -> {
             return loadMultiblockStructures(resourceManager);
         }, backgroundExecutor).thenCompose(preparationBarrier::wait).thenAcceptAsync(loadedStructures -> {
@@ -55,9 +57,7 @@ public class MultiblocksProvider implements PreparableReloadListener {
     }
 
     private static List<MultiblockStructure> loadMultiblockStructures(ResourceManager resourceManager) {
-        List<MultiblockStructure> loadedStructures = new ArrayList<>();
-        loadedStructures.addAll(loadFromLocation(resourceManager, "structures"));
-        return loadedStructures;
+        return new ArrayList<>(loadFromLocation(resourceManager, "structures"));
     }
 
     private static List<MultiblockStructure> loadFromLocation(ResourceManager resourceManager, String structures) {

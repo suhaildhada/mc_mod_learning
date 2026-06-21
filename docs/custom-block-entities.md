@@ -279,7 +279,7 @@ Example - add an energy bar and side config button to any custom screen:
 
 ```java
 @Override
-protected void init() {
+private void init() {
     super.init();
     addRenderableWidget(new EnergyBar(leftPos + 8, topPos + 10,
             () -> menu.getBlockEntity().energyStorage));

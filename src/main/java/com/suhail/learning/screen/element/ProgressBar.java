@@ -12,7 +12,7 @@ import java.util.List;
 import static com.suhail.learning.Main.rl;
 
 public class ProgressBar extends AbstractWidget {
-    private int x;
+    private final int x;
     private int y;
     public int bar = 0;
     private double progress;
@@ -20,26 +20,26 @@ public class ProgressBar extends AbstractWidget {
     protected static ResourceLocation ATLAS = rl("textures/gui/progress_bars.png");
 
     public static List<int[]> bars = List.of(
-            new int[] {0, 16},
-            new int[] {0, 16},
-            new int[] {0, 47},
-            new int[] {0, 78},
-            new int[] {0, 109},
-            new int[] {0, 140},
-            new int[] {0, 171},
-            new int[] {0, 202},
-            new int[] {37, 16},
-            new int[] {37, 47},
-            new int[] {37, 78},
-            new int[] {37, 109},
-            new int[] {37, 140},
-            new int[] {37, 171},
-            new int[] {37, 202},
-            new int[] {74, 38},
-            new int[] {111, 38}
+            new int[]{0, 16},
+            new int[]{0, 16},
+            new int[]{0, 47},
+            new int[]{0, 78},
+            new int[]{0, 109},
+            new int[]{0, 140},
+            new int[]{0, 171},
+            new int[]{0, 202},
+            new int[]{37, 16},
+            new int[]{37, 47},
+            new int[]{37, 78},
+            new int[]{37, 109},
+            new int[]{37, 140},
+            new int[]{37, 171},
+            new int[]{37, 202},
+            new int[]{74, 38},
+            new int[]{111, 38}
     );
 
-    public ProgressBar(int xMin, int yMin)  {
+    public ProgressBar(int xMin, int yMin) {
         super(xMin, yMin, 36, 15, Component.empty());
         x = xMin;
         y = yMin;
@@ -47,17 +47,17 @@ public class ProgressBar extends AbstractWidget {
         height = 15;
     }
 
-    public ProgressBar(int xMin, int yMin, int barNumber)  {
+    public ProgressBar(int xMin, int yMin, int barNumber) {
         this(xMin, yMin);
         bar = barNumber;
-        if(bar > 14) {
+        if (bar > 14) {
             height = 36;
             y -= 10;
         }
     }
 
     public void setProgress(int progress) {
-        this.progress = (double)progress/100D;
+        this.progress = (double) progress / 100D;
     }
 
 
@@ -71,8 +71,8 @@ public class ProgressBar extends AbstractWidget {
         RenderSystem.setShaderTexture(0, ATLAS);
         int texOffset = bars.get(bar)[0];
         int teyOffset = bars.get(bar)[1];
-        graphics.blit(ATLAS, x, y, texOffset, teyOffset,  width, height);
-        graphics.blit(ATLAS, x, y, texOffset, teyOffset-height-1, (int) (progress*width), height);
+        graphics.blit(ATLAS, x, y, texOffset, teyOffset, width, height);
+        graphics.blit(ATLAS, x, y, texOffset, teyOffset - height - 1, (int) (progress * width), height);
     }
 
     @Override

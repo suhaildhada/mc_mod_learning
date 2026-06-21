@@ -1,14 +1,14 @@
 package com.suhail.learning.compat.emi;
 
+import com.suhail.learning.recipe.UniversalProcessorRecipe;
+import com.suhail.learning.registration.ModEntry;
+import com.suhail.learning.util.caps.FluidCapDefinition;
+import com.suhail.learning.util.caps.ItemCapDefinition;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
-import com.suhail.learning.recipe.UniversalProcessorRecipe;
-import com.suhail.learning.registration.ModEntry;
-import com.suhail.learning.util.caps.FluidCapDefinition;
-import com.suhail.learning.util.caps.ItemCapDefinition;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.crafting.SizedIngredient;
@@ -53,44 +53,44 @@ public class ProcessorEmiRecipe implements EmiRecipe {
         itemOutputCount = itemCap != null ? itemCap.outputSlots : 0;
         fluidOutputCount = fluidCap != null ? fluidCap.outputTanks.size() : 0;
 
-        List<SizedIngredient> itemInputs = recipe.getItemInputs();
+        List<SizedIngredient> itemInputs = recipe.itemInputs();
         for (int i = 0; i < itemInputCount; i++) {
             if (i < itemInputs.size()) {
                 SizedIngredient si = itemInputs.get(i);
                 inputs.add(EmiIngredient.of(
-                    Arrays.stream(si.ingredient().getItems())
-                        .map(stack -> {
-                            ItemStack copy = stack.copy();
-                            copy.setCount(si.count());
-                            return (EmiIngredient) EmiStack.of(copy);
-                        })
-                        .toList()
+                        Arrays.stream(si.ingredient().getItems())
+                                .map(stack -> {
+                                    ItemStack copy = stack.copy();
+                                    copy.setCount(si.count());
+                                    return (EmiIngredient) EmiStack.of(copy);
+                                })
+                                .toList()
                 ));
             } else {
                 inputs.add(EmiIngredient.of(List.of()));
             }
         }
 
-        List<SizedFluidIngredient> fluidInputs = recipe.getFluidInputs();
+        List<SizedFluidIngredient> fluidInputs = recipe.fluidInputs();
         for (int i = 0; i < fluidInputCount; i++) {
             if (i < fluidInputs.size()) {
                 SizedFluidIngredient sfi = fluidInputs.get(i);
                 inputs.add(EmiIngredient.of(
-                    Arrays.stream(sfi.getFluids())
-                        .map(fs -> (EmiIngredient) EmiStack.of(fs.getFluid(), sfi.amount()))
-                        .toList()
+                        Arrays.stream(sfi.getFluids())
+                                .map(fs -> (EmiIngredient) EmiStack.of(fs.getFluid(), sfi.amount()))
+                                .toList()
                 ));
             } else {
                 inputs.add(EmiIngredient.of(List.of()));
             }
         }
 
-        List<ItemStack> itemOutputs = recipe.getItemOutputs();
+        List<ItemStack> itemOutputs = recipe.itemOutputs();
         for (int i = 0; i < itemOutputCount; i++) {
             outputs.add(i < itemOutputs.size() ? EmiStack.of(itemOutputs.get(i)) : EmiStack.EMPTY);
         }
 
-        List<FluidStack> fluidOutputs = recipe.getFluidOutputs();
+        List<FluidStack> fluidOutputs = recipe.fluidOutputs();
         for (int i = 0; i < fluidOutputCount; i++) {
             if (i < fluidOutputs.size()) {
                 FluidStack fs = fluidOutputs.get(i);

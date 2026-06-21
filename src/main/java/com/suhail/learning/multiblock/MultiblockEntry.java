@@ -1,9 +1,9 @@
 package com.suhail.learning.multiblock;
 
+import com.suhail.learning.api.impl.MultiblockCacheImpl;
 import com.suhail.learning.api.multiblock.IMultiblockCache;
 import com.suhail.learning.api.multiblock.IMultiblockLogic;
 import com.suhail.learning.api.multiblock.IMultiblockValidator;
-import com.suhail.learning.api.impl.MultiblockCacheImpl;
 import com.suhail.learning.registration.ModEntry;
 import com.suhail.learning.util.MultiblockStructure;
 import com.suhail.learning.util.MultiblocksProvider;
@@ -16,15 +16,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class MultiblockEntry {
-
-    private final String name;
-    private final Supplier<IMultiblockValidator> validatorSupplier;
-    private final Supplier<IMultiblockLogic> logicSupplier;
-    private final Supplier<IMultiblockCache> cacheSupplier;
-    private final List<Supplier<Block>> requiredBlocks;
-    private final ModEntry controllerEntry;
-    private final List<ModEntry> portEntries;
+public record MultiblockEntry(String name, Supplier<IMultiblockValidator> validatorSupplier,
+                              Supplier<IMultiblockLogic> logicSupplier, Supplier<IMultiblockCache> cacheSupplier,
+                              List<Supplier<Block>> requiredBlocks, ModEntry controllerEntry,
+                              List<ModEntry> portEntries) {
 
     public MultiblockEntry(String name,
                            Supplier<IMultiblockValidator> validatorSupplier,
@@ -62,14 +57,6 @@ public class MultiblockEntry {
                                      Supplier<IMultiblockLogic> logic) {
         return new MultiblockEntry(name, validator, logic, MultiblockCacheImpl::new);
     }
-
-    public String name() { return name; }
-    public Supplier<IMultiblockValidator> validatorSupplier() { return validatorSupplier; }
-    public Supplier<IMultiblockLogic> logicSupplier() { return logicSupplier; }
-    public Supplier<IMultiblockCache> cacheSupplier() { return cacheSupplier; }
-    public List<Supplier<Block>> requiredBlocks() { return requiredBlocks; }
-    public ModEntry controllerEntry() { return controllerEntry; }
-    public List<ModEntry> portEntries() { return portEntries; }
 
     /**
      * Returns true if every block referenced by this multiblock resolves to a registered, non-air block.

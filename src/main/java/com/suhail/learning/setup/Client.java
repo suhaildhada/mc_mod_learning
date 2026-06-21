@@ -1,11 +1,11 @@
 package com.suhail.learning.setup;
 
 import com.suhail.learning.Main;
+import com.suhail.learning.block.MultiblockControllerBlock;
+import com.suhail.learning.block.MultiblockPartBlock;
 import com.suhail.learning.container.MultiblockControllerContainer;
 import com.suhail.learning.container.MultiblockPortContainer;
 import com.suhail.learning.container.UniversalProcessorContainer;
-import com.suhail.learning.block.MultiblockControllerBlock;
-import com.suhail.learning.block.MultiblockPartBlock;
 import com.suhail.learning.registration.MaterialEntry;
 import com.suhail.learning.registration.MaterialFluidType;
 import com.suhail.learning.registration.ModEntry;
@@ -52,17 +52,17 @@ public class Client {
                     var block = entry.block() != null ? entry.block().get() : null;
                     if (block instanceof MultiblockControllerBlock) {
                         event.register(
-                                (MenuType<MultiblockControllerContainer>) (MenuType<?>) entry.menu().get(),
+                                (MenuType<MultiblockControllerContainer>) entry.menu().get(),
                                 MultiblockControllerScreen::new
                         );
                     } else if (block instanceof MultiblockPartBlock) {
                         event.register(
-                                (MenuType<MultiblockPortContainer>) (MenuType<?>) entry.menu().get(),
+                                (MenuType<MultiblockPortContainer>) entry.menu().get(),
                                 MultiblockPortScreen::new
                         );
                     } else {
                         event.register(
-                                (MenuType<UniversalProcessorContainer>) (MenuType<?>) entry.menu().get(),
+                                (MenuType<UniversalProcessorContainer>) entry.menu().get(),
                                 UniversalProcessorScreen::new
                         );
                     }

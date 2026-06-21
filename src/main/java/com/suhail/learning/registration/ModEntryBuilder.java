@@ -306,7 +306,7 @@ public class ModEntryBuilder {
                 block
         ).build(null);
         b.menuType = () -> IMenuTypeExtension.create(
-                (IContainerFactory<MultiblockControllerContainer>) MultiblockControllerContainer::new);
+                MultiblockControllerContainer::new);
         return b.withRecipes();
     }
 
@@ -327,14 +327,12 @@ public class ModEntryBuilder {
                         (pos, state) -> new MultiblockPartBE(beHolder[0].get(), pos, state, name),
                         block.get()
                 ).build(null));
-        beHolder[0] = (DeferredHolder<BlockEntityType<?>, BlockEntityType<?>>) (DeferredHolder) beReg;
+        beHolder[0] = (DeferredHolder<BlockEntityType<?>, BlockEntityType<?>>) beReg;
 
         DeferredItem<Item> item = ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
 
-        DeferredHolder<MenuType<?>, MenuType<?>> menu =
-                (DeferredHolder<MenuType<?>, MenuType<?>>) (DeferredHolder<?, ?>)
-                        CONTAINERS.register(name, () -> IMenuTypeExtension.create(
-                                (IContainerFactory<MultiblockPortContainer>) MultiblockPortContainer::new));
+        DeferredHolder<MenuType<?>, MenuType<?>> menu = CONTAINERS.register(name, () -> IMenuTypeExtension.create(
+                MultiblockPortContainer::new));
 
         ModEntry entry = new ModEntry(name, block, item, menu, beHolder[0], false, null, null, null, null, null, null, null, null, null, Set.of());
         ENTRIES.put(name, entry);
@@ -448,31 +446,27 @@ public class ModEntryBuilder {
         if (entitySupplierFactory != null && block != null) {
             @SuppressWarnings("unchecked")
             DeferredHolder<BlockEntityType<?>, BlockEntityType<?>> entityCast =
-                    (DeferredHolder<BlockEntityType<?>, BlockEntityType<?>>)
-                            BLOCK_ENTITIES.register(name, () -> entitySupplierFactory.apply(finalBlock.get()).get());
+                    BLOCK_ENTITIES.register(name, () -> entitySupplierFactory.apply(finalBlock.get()).get());
             blockEntity = entityCast;
             this.registeredBe = entityCast;
         }
         if (menuType != null) {
             @SuppressWarnings("unchecked")
             DeferredHolder<MenuType<?>, MenuType<?>> menuCast =
-                    (DeferredHolder<MenuType<?>, MenuType<?>>)
-                            (DeferredHolder<?, ?>) CONTAINERS.register(name, menuType);
+                    CONTAINERS.register(name, menuType);
             menu = menuCast;
         }
         DeferredHolder<RecipeSerializer<?>, RecipeSerializer<?>> recipeSerializer = null;
         if (recipeTypeSupplier != null) {
             @SuppressWarnings("unchecked")
             DeferredHolder<RecipeType<?>, RecipeType<?>> recipeCast =
-                    (DeferredHolder<RecipeType<?>, RecipeType<?>>)
-                            (DeferredHolder<?, ?>) RECIPE_TYPES.register(name, recipeTypeSupplier);
+                    RECIPE_TYPES.register(name, recipeTypeSupplier);
             recipeType = recipeCast;
         }
         if (recipeSerializerSupplier != null) {
             @SuppressWarnings("unchecked")
             DeferredHolder<RecipeSerializer<?>, RecipeSerializer<?>> serializerCast =
-                    (DeferredHolder<RecipeSerializer<?>, RecipeSerializer<?>>)
-                            (DeferredHolder<?, ?>) RECIPE_SERIALIZERS.register(name, recipeSerializerSupplier);
+                    RECIPE_SERIALIZERS.register(name, recipeSerializerSupplier);
             recipeSerializer = serializerCast;
         }
 

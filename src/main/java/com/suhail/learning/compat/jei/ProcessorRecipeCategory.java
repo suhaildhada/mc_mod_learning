@@ -103,7 +103,7 @@ public class ProcessorRecipeCategory implements IRecipeCategory<UniversalProcess
         int y = START_Y;
 
         // Item input slots
-        List<SizedIngredient> itemInputs = recipe.getItemInputs();
+        List<SizedIngredient> itemInputs = recipe.itemInputs();
         for (int i = 0; i < itemInputCount; i++) {
             if (i < itemInputs.size()) {
                 SizedIngredient si = itemInputs.get(i);
@@ -122,7 +122,7 @@ public class ProcessorRecipeCategory implements IRecipeCategory<UniversalProcess
         }
 
         // Fluid input slots
-        List<SizedFluidIngredient> fluidInputs = recipe.getFluidInputs();
+        List<SizedFluidIngredient> fluidInputs = recipe.fluidInputs();
         for (int i = 0; i < fluidInputCount; i++) {
             if (i < fluidInputs.size()) {
                 SizedFluidIngredient sfi = fluidInputs.get(i);
@@ -143,7 +143,7 @@ public class ProcessorRecipeCategory implements IRecipeCategory<UniversalProcess
         x += OUTPUT_GAP;
 
         // Item output slots
-        List<ItemStack> itemOutputs = recipe.getItemOutputs();
+        List<ItemStack> itemOutputs = recipe.itemOutputs();
         for (int i = 0; i < itemOutputCount; i++) {
             if (i < itemOutputs.size()) {
                 builder.addSlot(RecipeIngredientRole.OUTPUT, x, y)
@@ -155,7 +155,7 @@ public class ProcessorRecipeCategory implements IRecipeCategory<UniversalProcess
         }
 
         // Fluid output slots
-        List<FluidStack> fluidOutputs = recipe.getFluidOutputs();
+        List<FluidStack> fluidOutputs = recipe.fluidOutputs();
         for (int i = 0; i < fluidOutputCount; i++) {
             if (i < fluidOutputs.size()) {
                 FluidStack fs = fluidOutputs.get(i);
