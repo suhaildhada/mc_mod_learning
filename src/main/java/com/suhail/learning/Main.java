@@ -2,7 +2,6 @@ package com.suhail.learning;
 
 import com.mojang.logging.LogUtils;
 import com.suhail.learning.block_entity.GlobalBlockEntity;
-import com.suhail.learning.block_entity.MultiblockPartBE;
 import com.suhail.learning.compat.cc.CCCompatHandler;
 import com.suhail.learning.config.*;
 import com.suhail.learning.handler.event.ServerEvents;
@@ -105,67 +104,84 @@ public class Main {
     }
 
     private void registerCapabilities(RegisterCapabilitiesEvent event) {
+
         for (ModEntry entry : ModEntries.ENTRIES.values()) {
-            if (entry.hasBlockEntity() && entry.itemCap() != null) {
-                event.registerBlockEntity(
-                        Capabilities.ItemHandler.BLOCK,
-                        entry.blockEntity().get(),
-                        (be, side) -> {
-                            if (be instanceof GlobalBlockEntity gbe) {
-                                return gbe.getItemHandler(side);
-                            }
-                            return null;
-                        }
-                );
+
+            boolean hasBlockEntity = entry.hasBlockEntity();
+            if (!hasBlockEntity) {
+                continue;
             }
-            if (entry.hasBlockEntity() && entry.fluidCap() != null) {
-                event.registerBlockEntity(
-                        Capabilities.FluidHandler.BLOCK,
-                        entry.blockEntity().get(),
-                        (be, side) -> {
-                            if (be instanceof GlobalBlockEntity gbe) {
-                                return gbe.getFluidHandler(side);
-                            }
-                            return null;
-                        }
-                );
-            }
-            if (entry.hasBlockEntity() && entry.energyCap() != null) {
-                event.registerBlockEntity(
-                        Capabilities.EnergyStorage.BLOCK,
-                        entry.blockEntity().get(),
-                        (be, side) -> {
-                            if (be instanceof GlobalBlockEntity gbe) {
-                                return gbe.getEnergyHandler(side);
-                            }
-                            return null;
-                        }
-                );
-            }
+
+            handleCapabilities(event, entry);
         }
 
+        handleMultiBlockCapabilities(event);
+    }
+
+    private static void handleMultiBlockCapabilities(RegisterCapabilitiesEvent event) {
         // Multiblock ports proxy capabilities from their controller. The port's own ModEntry
         // has no cap definitions, so register caps here unconditionally for every port BE type.
         for (MultiblockEntry mb : MultiblockRegistry.ENTRIES.values()) {
             for (ModEntry port : mb.portEntries()) {
-                if (!port.hasBlockEntity()) continue;
-                event.registerBlockEntity(
-                        Capabilities.ItemHandler.BLOCK,
-                        port.blockEntity().get(),
-                        (be, side) -> be instanceof MultiblockPartBE part ? part.getItemHandler(side) : null
-                );
-                event.registerBlockEntity(
-                        Capabilities.FluidHandler.BLOCK,
-                        port.blockEntity().get(),
-                        (be, side) -> be instanceof MultiblockPartBE part ? part.getFluidHandler(side) : null
-                );
-                event.registerBlockEntity(
-                        Capabilities.EnergyStorage.BLOCK,
-                        port.blockEntity().get(),
-                        (be, side) -> be instanceof MultiblockPartBE part ? part.getEnergyHandler(side) : null
-                );
+                if (!port.hasBlockEntity()) {
+                    continue;
+                }
+                handleItemCap(event, port);
+                handleFluidCap(event, port);
+                handleEnergyCap(event, port);
             }
         }
+    }
+
+    private static void handleCapabilities(RegisterCapabilitiesEvent event, ModEntry entry) {
+        if (entry.itemCap() != null) {
+            handleItemCap(event, entry);
+        }
+        if (entry.fluidCap() != null) {
+            handleFluidCap(event, entry);
+        }
+        if (entry.energyCap() != null) {
+            handleEnergyCap(event, entry);
+        }
+    }
+
+    private static void handleEnergyCap(RegisterCapabilitiesEvent event, ModEntry entry) {
+        event.registerBlockEntity(
+                Capabilities.EnergyStorage.BLOCK,
+                entry.blockEntity().get(),
+                (be, side) -> {
+                    if (be instanceof GlobalBlockEntity gbe) {
+                        return gbe.getEnergyHandler(side);
+                    }
+                    return null;
+                }
+        );
+    }
+
+    private static void handleFluidCap(RegisterCapabilitiesEvent event, ModEntry entry) {
+        event.registerBlockEntity(
+                Capabilities.FluidHandler.BLOCK,
+                entry.blockEntity().get(),
+                (be, side) -> {
+                    if (be instanceof GlobalBlockEntity gbe) {
+                        return gbe.getFluidHandler(side);
+                    }
+                    return null;
+                }
+        );
+    }
+
+    private static void handleItemCap(RegisterCapabilitiesEvent event, ModEntry entry) {
+        event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK,
+                entry.blockEntity().get(),
+                (be, side) -> {
+                    if (be instanceof GlobalBlockEntity gbe) {
+                        return gbe.getItemHandler(side);
+                    }
+                    return null;
+                }
+        );
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
@@ -183,66 +199,103 @@ public class Main {
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
         for (ModEntry entry : ModEntries.ENTRIES.values()) {
             if (entry.materialEntry() != null) {
-                var mat = entry.materialEntry();
-                String matName = mat.name;
-                if (event.getTabKey() == CreativeModeTabs.NATURAL_BLOCKS) {
-                    if (mat.hasOre() && Materials.isTypeEnabled(matName, "ore")) event.accept(mat.oreItem());
-                    if (mat.hasRawOre() && Materials.isTypeEnabled(matName, "raw_ore")) event.accept(mat.rawOre());
-                }
-                if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
-                    if (mat.hasBlock() && Materials.isTypeEnabled(matName, "block")) event.accept(mat.storageItem());
-                }
-                if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
-                    if (mat.hasIngot() && Materials.isTypeEnabled(matName, "ingot")) event.accept(mat.ingot());
-                    if (mat.hasGem() && Materials.isTypeEnabled(matName, "gem")) event.accept(mat.gem());
-                    if (mat.hasDust() && Materials.isTypeEnabled(matName, "dust")) event.accept(mat.dust());
-                    if (mat.hasPlate() && Materials.isTypeEnabled(matName, "plate")) event.accept(mat.plate());
-                    if (mat.hasNugget() && Materials.isTypeEnabled(matName, "nugget")) event.accept(mat.nugget());
-                }
-                if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
-                    if (mat.hasFluid() && Materials.isTypeEnabled(matName, "fluid")) event.accept(mat.bucket());
-                }
+                addMaterialEntries(event, entry);
                 continue;
             }
             if (entry.hasBlockEntity() && Processors.isEnabled(entry.name())) {
-                if (event.getTabKey() == CreativeModeTabs.FUNCTIONAL_BLOCKS) {
-                    event.accept(entry.item());
-                }
+                addFunctionalBlocks(event, entry);
                 continue;
             }
             if (entry.hasBlock()) {
-                if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
-                    event.accept(entry.item());
-                }
+                addBuildingBlocks(event, entry);
                 continue;
             }
             if (entry.hasToolSet()) {
-                var tools = entry.toolSetEntry();
-                if (event.getTabKey() == CreativeModeTabs.COMBAT) {
-                    event.accept(tools.sword());
-                }
-                if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
-                    event.accept(tools.pickaxe());
-                    event.accept(tools.axe());
-                    event.accept(tools.shovel());
-                    event.accept(tools.hoe());
-                }
+                addToolSets(event, entry);
                 continue;
             }
             if (entry.hasArmorSet()) {
-                var armor = entry.armorSetEntry();
-                if (event.getTabKey() == CreativeModeTabs.COMBAT) {
-                    event.accept(armor.helmet());
-                    event.accept(armor.chestplate());
-                    event.accept(armor.leggings());
-                    event.accept(armor.boots());
-                }
+                addArmorSets(event, entry);
                 continue;
             }
             if (entry.hasItem() && event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
-                    event.accept(entry.item());
-                }
+                event.accept(entry.item());
+            }
+        }
+    }
 
+    private static void addArmorSets(BuildCreativeModeTabContentsEvent event, ModEntry entry) {
+        var armor = entry.armorSetEntry();
+        if (event.getTabKey() == CreativeModeTabs.COMBAT) {
+            event.accept(armor.helmet());
+            event.accept(armor.chestplate());
+            event.accept(armor.leggings());
+            event.accept(armor.boots());
+        }
+    }
+
+    private static void addToolSets(BuildCreativeModeTabContentsEvent event, ModEntry entry) {
+        var tools = entry.toolSetEntry();
+        if (event.getTabKey() == CreativeModeTabs.COMBAT) {
+            event.accept(tools.sword());
+        }
+        if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
+            event.accept(tools.pickaxe());
+            event.accept(tools.axe());
+            event.accept(tools.shovel());
+            event.accept(tools.hoe());
+        }
+    }
+
+    private static void addBuildingBlocks(BuildCreativeModeTabContentsEvent event, ModEntry entry) {
+        if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
+            event.accept(entry.item());
+        }
+    }
+
+    private static void addFunctionalBlocks(BuildCreativeModeTabContentsEvent event, ModEntry entry) {
+        if (event.getTabKey() == CreativeModeTabs.FUNCTIONAL_BLOCKS) {
+            event.accept(entry.item());
+        }
+    }
+
+    // Helper: run the action only if enabled
+    private static void acceptIf(BuildCreativeModeTabContentsEvent event, boolean enabled, Runnable action) {
+        if (enabled) action.run();
+    }
+
+    // Helper: convenience to check Materials.isTypeEnabled with matName
+    private static boolean enabled(String matName, String type) {
+        return Materials.isTypeEnabled(matName, type);
+    }
+
+    private static void addMaterialEntries(BuildCreativeModeTabContentsEvent event, ModEntry entry) {
+        var mat = entry.materialEntry();
+        String matName = mat.name;
+        var tab = event.getTabKey();
+
+        if (tab == CreativeModeTabs.NATURAL_BLOCKS) {
+            acceptIf(event, mat.hasOre() && enabled(matName, "ore"), () -> event.accept(mat.oreItem()));
+            acceptIf(event, mat.hasRawOre() && enabled(matName, "raw_ore"), () -> event.accept(mat.rawOre()));
+            return;
+        }
+
+        if (tab == CreativeModeTabs.BUILDING_BLOCKS) {
+            acceptIf(event, mat.hasBlock() && enabled(matName, "block"), () -> event.accept(mat.storageItem()));
+            return;
+        }
+
+        if (tab == CreativeModeTabs.INGREDIENTS) {
+            acceptIf(event, mat.hasIngot() && enabled(matName, "ingot"), () -> event.accept(mat.ingot()));
+            acceptIf(event, mat.hasGem() && enabled(matName, "gem"), () -> event.accept(mat.gem()));
+            acceptIf(event, mat.hasDust() && enabled(matName, "dust"), () -> event.accept(mat.dust()));
+            acceptIf(event, mat.hasPlate() && enabled(matName, "plate"), () -> event.accept(mat.plate()));
+            acceptIf(event, mat.hasNugget() && enabled(matName, "nugget"), () -> event.accept(mat.nugget()));
+            return;
+        }
+
+        if (tab == CreativeModeTabs.TOOLS_AND_UTILITIES) {
+            acceptIf(event, mat.hasFluid() && enabled(matName, "fluid"), () -> event.accept(mat.bucket()));
         }
     }
 
