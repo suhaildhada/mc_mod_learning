@@ -1,6 +1,5 @@
 package com.suhail.learning.compat.jei;
 
-import com.suhail.learning.Main;
 import com.suhail.learning.util.StructurePreviewRenderer;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -15,10 +14,12 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 
+import static com.suhail.learning.Main.MODID;
+
 public class MultiblockExampleCategory implements IRecipeCategory<MultiblockStructureRecipe> {
 
     public static final RecipeType<MultiblockStructureRecipe> TYPE =
-            RecipeType.create(Main.MODID, "multiblock_examples", MultiblockStructureRecipe.class);
+            RecipeType.create(MODID, "multiblock_examples", MultiblockStructureRecipe.class);
 
     private static final int WIDTH = 140;
     private static final int HEIGHT = 140;
@@ -29,7 +30,7 @@ public class MultiblockExampleCategory implements IRecipeCategory<MultiblockStru
 
     public MultiblockExampleCategory(IGuiHelper guiHelper) {
         this.background = guiHelper.createBlankDrawable(WIDTH, HEIGHT);
-        this.title = Component.translatable("category." + Main.MODID + ".multiblock_examples");
+        this.title = Component.translatable("category.%s.multiblock_examples".formatted(MODID));
         this.icon = guiHelper.createDrawableItemStack(defaultIcon());
     }
 
@@ -38,19 +39,29 @@ public class MultiblockExampleCategory implements IRecipeCategory<MultiblockStru
     }
 
     @Override
-    public @NonNull RecipeType<MultiblockStructureRecipe> getRecipeType() { return TYPE; }
+    public @NonNull RecipeType<MultiblockStructureRecipe> getRecipeType() {
+        return TYPE;
+    }
 
     @Override
-    public @NonNull Component getTitle() { return title; }
+    public @NonNull Component getTitle() {
+        return title;
+    }
 
     @Override
-    public @Nullable IDrawable getIcon() { return icon; }
+    public @Nullable IDrawable getIcon() {
+        return icon;
+    }
 
     @Override
-    public int getWidth() { return background.getWidth(); }
+    public int getWidth() {
+        return background.getWidth();
+    }
 
     @Override
-    public int getHeight() { return background.getHeight(); }
+    public int getHeight() {
+        return background.getHeight();
+    }
 
     @Override
     public void setRecipe(@NonNull IRecipeLayoutBuilder builder, @NonNull MultiblockStructureRecipe recipe, @NonNull IFocusGroup focuses) {
@@ -59,7 +70,7 @@ public class MultiblockExampleCategory implements IRecipeCategory<MultiblockStru
     @Override
     public void draw(MultiblockStructureRecipe recipe, @NonNull IRecipeSlotsView recipeSlotsView,
                      GuiGraphics graphics, double mouseX, double mouseY) {
-        Component name = Component.translatable("multiblock." + Main.MODID + "." + recipe.getName());
+        Component name = Component.translatable("multiblock.%s.%s".formatted(MODID, recipe.getName()));
         graphics.drawString(net.minecraft.client.Minecraft.getInstance().font, name, 2, 2, 0xFFFFFF, false);
 
         if (recipe.getStructure() != null) {
@@ -67,8 +78,8 @@ public class MultiblockExampleCategory implements IRecipeCategory<MultiblockStru
 
             Component dims = Component.literal(
                     recipe.getStructure().getWidth() + "x" +
-                    recipe.getStructure().getHeight() + "x" +
-                    recipe.getStructure().getDepth());
+                            recipe.getStructure().getHeight() + "x" +
+                            recipe.getStructure().getDepth());
             graphics.drawString(net.minecraft.client.Minecraft.getInstance().font, dims,
                     WIDTH - net.minecraft.client.Minecraft.getInstance().font.width(dims) - 2,
                     HEIGHT - 10, 0xAAAAAA, false);

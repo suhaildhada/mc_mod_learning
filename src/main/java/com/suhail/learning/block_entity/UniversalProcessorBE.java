@@ -22,7 +22,7 @@ public class UniversalProcessorBE extends GlobalBlockEntity implements MenuProvi
 
     @Override
     public @NonNull Component getDisplayName() {
-        return Component.translatable("block." + MODID + "." + name);
+        return Component.translatable("block.%s.%s".formatted(MODID, name));
     }
 
     @Nullable

@@ -85,7 +85,7 @@ public class MultiblockPartBE extends GlobalBlockEntity implements MenuProvider 
 
     @Override
     public @NonNull Component getDisplayName() {
-        return Component.translatable("block." + MODID + "." + name);
+        return Component.translatable("block.%s.%s".formatted(MODID, name));
     }
 
     @Nullable

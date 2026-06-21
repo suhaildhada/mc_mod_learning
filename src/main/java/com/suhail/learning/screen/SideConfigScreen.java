@@ -30,7 +30,7 @@ public class SideConfigScreen extends Screen {
     private int winY;
 
     public SideConfigScreen(AbstractContainerScreen<UniversalProcessorContainer> parentScreen, int slotId) {
-        super(getMutableComponent("screen." + MODID + ".side_config"));
+        super(getMutableComponent("screen.%s.side_config".formatted(MODID)));
         this.parentScreen = parentScreen;
         this.slotId = slotId;
     }

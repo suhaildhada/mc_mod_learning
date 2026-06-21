@@ -10,7 +10,7 @@ import net.neoforged.neoforge.common.data.LanguageProvider;
 import static com.suhail.learning.Main.MODID;
 import static com.suhail.learning.util.TextUtils.convertToName;
 
-public class ModLanguageProvider  extends LanguageProvider {
+public class ModLanguageProvider extends LanguageProvider {
     public ModLanguageProvider(DataGenerator gen, String locale) {
         super(gen.getPackOutput(), MODID, locale);
     }
@@ -19,31 +19,31 @@ public class ModLanguageProvider  extends LanguageProvider {
     protected void addTranslations() {
         labels();
         for (String name : ModEntries.ENTRIES.keySet()) {
-            if(ModEntries.get(name).hasBlock()) {
+            if (ModEntries.get(name).hasBlock()) {
                 add(ModEntries.get(name).block().get(), convertToName(name));
-                if(ModEntries.get(name).hasRecipes()) {
-                    add("emi.category."+MODID+"."+name, convertToName(name));
+                if (ModEntries.get(name).hasRecipes()) {
+                    add("emi.category.%s.%s".formatted(MODID, name), convertToName(name));
 
                 }
                 continue;
             }
-            if(ModEntries.get(name).hasItem()) {
+            if (ModEntries.get(name).hasItem()) {
                 add(ModEntries.get(name).item().get(), convertToName(name));
                 continue;
             }
             if (ModEntries.get(name).toolSetEntry() instanceof ToolSetEntry toolSet) {
-                add(toolSet.sword().get(),   convertToName(toolSet.name + "_sword"));
+                add(toolSet.sword().get(), convertToName(toolSet.name + "_sword"));
                 add(toolSet.pickaxe().get(), convertToName(toolSet.name + "_pickaxe"));
-                add(toolSet.axe().get(),     convertToName(toolSet.name + "_axe"));
-                add(toolSet.shovel().get(),  convertToName(toolSet.name + "_shovel"));
-                add(toolSet.hoe().get(),     convertToName(toolSet.name + "_hoe"));
+                add(toolSet.axe().get(), convertToName(toolSet.name + "_axe"));
+                add(toolSet.shovel().get(), convertToName(toolSet.name + "_shovel"));
+                add(toolSet.hoe().get(), convertToName(toolSet.name + "_hoe"));
                 continue;
             }
             if (ModEntries.get(name).armorSetEntry() instanceof ArmorSetEntry armorSet) {
-                add(armorSet.helmet().get(),     convertToName(armorSet.name + "_helmet"));
+                add(armorSet.helmet().get(), convertToName(armorSet.name + "_helmet"));
                 add(armorSet.chestplate().get(), convertToName(armorSet.name + "_chestplate"));
-                add(armorSet.leggings().get(),   convertToName(armorSet.name + "_leggings"));
-                add(armorSet.boots().get(),      convertToName(armorSet.name + "_boots"));
+                add(armorSet.leggings().get(), convertToName(armorSet.name + "_leggings"));
+                add(armorSet.boots().get(), convertToName(armorSet.name + "_boots"));
                 continue;
             }
             if (ModEntries.get(name).materialEntry() instanceof MaterialEntry materialEntry) {
@@ -77,17 +77,17 @@ public class ModLanguageProvider  extends LanguageProvider {
                             ? "molten_" + materialEntry.name
                             : materialEntry.name + "_fluid";
                     add(fluid.bucket().get(), convertToName(fluidName + "_bucket"));
-                    add("fluid_type." + MODID + "." + fluidName, convertToName(fluidName));
+                    add("fluid_type.%s.%s".formatted(MODID, fluidName), convertToName(fluidName));
                 }
             }
         }
     }
 
     private void labels() {
-        add("screen." + MODID + ".side_config", "Side Configuration");
-        add("screen." + MODID + ".slot_selection", "Select Slot");
-        add("screen." + MODID + ".multiblock.assembled", "Assembled");
-        add("screen." + MODID + ".multiblock.not_assembled", "Not Assembled");
+        add("screen.%s.side_config".formatted(MODID), "Side Configuration");
+        add("screen.%s.slot_selection".formatted(MODID), "Select Slot");
+        add("screen.%s.multiblock.assembled".formatted(MODID), "Assembled");
+        add("screen.%s.multiblock.not_assembled".formatted(MODID), "Not Assembled");
         add("tooltip.fluid.empty", "Empty");
     }
 }

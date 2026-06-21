@@ -1,20 +1,22 @@
 package com.suhail.learning.compat.emi;
 
+import com.suhail.learning.Main;
+import com.suhail.learning.multiblock.MultiblockEntry;
+import com.suhail.learning.util.MultiblockStructure;
+import com.suhail.learning.util.StructurePreviewRenderer;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
-import com.suhail.learning.Main;
-import com.suhail.learning.multiblock.MultiblockEntry;
-import com.suhail.learning.util.MultiblockStructure;
-import com.suhail.learning.util.StructurePreviewRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+
+import static com.suhail.learning.Main.MODID;
 
 public class MultiblockExampleEmiRecipe implements EmiRecipe {
 
@@ -34,33 +36,45 @@ public class MultiblockExampleEmiRecipe implements EmiRecipe {
     }
 
     @Override
-    public EmiRecipeCategory getCategory() { return category; }
+    public EmiRecipeCategory getCategory() {
+        return category;
+    }
 
     @Override
-    public @Nullable ResourceLocation getId() { return id; }
+    public @Nullable ResourceLocation getId() {
+        return id;
+    }
 
     @Override
-    public List<EmiIngredient> getInputs() { return List.of(); }
+    public List<EmiIngredient> getInputs() {
+        return List.of();
+    }
 
     @Override
-    public List<EmiStack> getOutputs() { return List.of(); }
+    public List<EmiStack> getOutputs() {
+        return List.of();
+    }
 
     @Override
-    public int getDisplayWidth() { return WIDTH; }
+    public int getDisplayWidth() {
+        return WIDTH;
+    }
 
     @Override
-    public int getDisplayHeight() { return HEIGHT; }
+    public int getDisplayHeight() {
+        return HEIGHT;
+    }
 
     @Override
     public void addWidgets(WidgetHolder widgets) {
-        Component name = Component.translatable("multiblock." + Main.MODID + "." + entry.name());
+        Component name = Component.translatable("multiblock.%s.%s".formatted(MODID, entry.name()));
         widgets.addText(name, 2, 2, 0xFFFFFFFF, false);
 
         widgets.addDrawable(0, 12, WIDTH, HEIGHT - 14, (graphics, mouseX, mouseY, delta) ->
                 StructurePreviewRenderer.render(graphics, structure, 0, 0, WIDTH, HEIGHT - 14, mouseX, mouseY));
 
         Component dims = Component.literal(
-                structure.getWidth() + "x" + structure.getHeight() + "x" + structure.getDepth());
+                "%dx%dx%d".formatted(structure.getWidth(), structure.getHeight(), structure.getDepth()));
         int w = Minecraft.getInstance().font.width(dims);
         widgets.addText(dims, WIDTH - w - 2, HEIGHT - 10, 0xFFAAAAAA, false);
     }

@@ -1,6 +1,5 @@
 package com.suhail.learning.compat.jei;
 
-import com.suhail.learning.Main;
 import com.suhail.learning.recipe.UniversalProcessorRecipe;
 import com.suhail.learning.registration.ModEntry;
 import com.suhail.learning.util.caps.FluidCapDefinition;
@@ -23,6 +22,7 @@ import org.jspecify.annotations.NonNull;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.suhail.learning.Main.MODID;
 import static com.suhail.learning.util.TextUtils.getMutableComponent;
 
 public class ProcessorRecipeCategory implements IRecipeCategory<UniversalProcessorRecipe> {
@@ -47,7 +47,7 @@ public class ProcessorRecipeCategory implements IRecipeCategory<UniversalProcess
     public ProcessorRecipeCategory(IGuiHelper guiHelper, ModEntry entry, RecipeType<UniversalProcessorRecipe> recipeType) {
         this.recipeType = recipeType;
         this.modEntry = entry;
-        this.title = getMutableComponent("block." + Main.MODID + "." + entry.name());
+        this.title = getMutableComponent("block.%s.%s".formatted(MODID, entry.name()));
 
         ItemCapDefinition itemCap = entry.itemCap();
         FluidCapDefinition fluidCap = entry.fluidCap();

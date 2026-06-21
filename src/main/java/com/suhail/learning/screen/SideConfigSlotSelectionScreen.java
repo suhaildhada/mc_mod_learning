@@ -26,21 +26,22 @@ public class SideConfigSlotSelectionScreen extends Screen {
 
     private static final int WIN_W = 180;
     private static final int WIN_H = 140;
-    private static final int BTN   = 16;
+    private static final int BTN = 16;
 
     private final AbstractContainerScreen<UniversalProcessorContainer> parentScreen;
 
     private int winX;
     private int winY;
 
-    private record SlotEntry(int handlerSlotId, boolean isFluid, int x, int y) {}
+    private record SlotEntry(int handlerSlotId, boolean isFluid, int x, int y) {
+    }
 
     private final List<SlotEntry> slotEntries = new ArrayList<>();
 
     public SideConfigSlotSelectionScreen(AbstractContainerScreen<UniversalProcessorContainer> parent) {
-        super(getMutableComponent("screen." + MODID + ".slot_selection"));
+        super(getMutableComponent("screen.%s.slot_selection".formatted(MODID)));
         this.parentScreen = parent;
-        width  = WIN_W;
+        width = WIN_W;
         height = WIN_H;
     }
 
@@ -57,11 +58,11 @@ public class SideConfigSlotSelectionScreen extends Screen {
         ModEntry entry = ModEntries.get(menu.getBlockEntity().name);
         SlotsLayout layout = entry.slotsLayout();
 
-        int inputItemCount   = entry.itemCap()  != null ? entry.itemCap().inputSlots         : 0;
-        int outputItemCount  = entry.itemCap()  != null ? entry.itemCap().outputSlots         : 0;
-        int inputFluidCount  = entry.fluidCap() != null ? entry.fluidCap().inputTanks.size()  : 0;
+        int inputItemCount = entry.itemCap() != null ? entry.itemCap().inputSlots : 0;
+        int outputItemCount = entry.itemCap() != null ? entry.itemCap().outputSlots : 0;
+        int inputFluidCount = entry.fluidCap() != null ? entry.fluidCap().inputTanks.size() : 0;
         int outputFluidCount = entry.fluidCap() != null ? entry.fluidCap().outputTanks.size() : 0;
-        int totalItemSlots   = inputItemCount + outputItemCount;
+        int totalItemSlots = inputItemCount + outputItemCount;
 
         int layoutIndex = 0;
         for (int i = 0; i < inputItemCount; i++, layoutIndex++) {
@@ -84,7 +85,8 @@ public class SideConfigSlotSelectionScreen extends Screen {
         for (SlotEntry se : slotEntries) {
             final int slotId = se.handlerSlotId();
             SlotWidget btn = new SlotWidget(se.x(), se.y(), BTN + 2, BTN + 2, Component.empty());
-            if (se.isFluid()) btn.fluid(); else btn.item();
+            if (se.isFluid()) btn.fluid();
+            else btn.item();
             btn.onPress(() -> Minecraft.getInstance().setScreen(new SideConfigScreen(parentScreen, slotId)));
             addRenderableWidget(btn);
         }

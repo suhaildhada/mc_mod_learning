@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
+import static com.suhail.learning.Main.MODID;
 import static com.suhail.learning.Main.rlFromString;
 
 public class MultiblocksProvider implements PreparableReloadListener {
@@ -108,13 +109,13 @@ public class MultiblocksProvider implements PreparableReloadListener {
      * @return loaded structure, or null if file missing or invalid
      */
     public static MultiblockStructure loadStructureFromClasspath(String name) {
-        String path = "/data/" + Main.MODID + "/structures/" + name + ".nbt";
+        String path = "/data/%s/structures/%s.nbt".formatted(MODID, name);
         try (InputStream is = MultiblocksProvider.class.getResourceAsStream(path)) {
             if (is == null) return null;
             CompoundTag nbt = NbtIo.readCompressed(is, NbtAccounter.unlimitedHeap());
             if (!validateStructureBlocks(nbt)) return null;
             ResourceLocation rl = ResourceLocation.fromNamespaceAndPath(Main.MODID,
-                    "structures/" + name + ".nbt");
+                    "structures/%s.nbt".formatted(name));
             return new MultiblockStructure(rl, nbt, name + ".nbt");
         } catch (IOException e) {
             LOGGER.error("Failed to load structure {} from classpath: {}", name, e.getMessage());
