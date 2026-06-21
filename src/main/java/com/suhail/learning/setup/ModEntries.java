@@ -6,6 +6,7 @@ import com.suhail.learning.multiblock.MultiblockEntry;
 import com.suhail.learning.multiblock.MultiblockEntryBuilder;
 import com.suhail.learning.registration.ArmorMaterialEntry;
 import com.suhail.learning.registration.ModEntry;
+import com.suhail.learning.registration.ModEntryBuilder;
 import com.suhail.learning.util.SlotsLayout;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.Items;

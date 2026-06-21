@@ -1,33 +1,27 @@
 package com.suhail.learning.registration;
 
-import com.suhail.learning.util.SlotsLayout;
-import com.suhail.learning.util.caps.EnergyCapDefinition;
-import com.suhail.learning.util.caps.FluidCapDefinition;
-import com.suhail.learning.util.caps.ItemCapDefinition;
+import com.suhail.learning.block.MultiblockControllerBlock;
+import com.suhail.learning.block.MultiblockPartBlock;
 import com.suhail.learning.block.UniversalProcessorBlock;
+import com.suhail.learning.block_entity.MultiblockControllerBE;
+import com.suhail.learning.block_entity.MultiblockPartBE;
 import com.suhail.learning.block_entity.UniversalProcessorBE;
 import com.suhail.learning.container.MultiblockControllerContainer;
 import com.suhail.learning.container.MultiblockPortContainer;
 import com.suhail.learning.container.UniversalProcessorContainer;
-import com.suhail.learning.block.MultiblockControllerBlock;
-import com.suhail.learning.block.MultiblockPartBlock;
-import com.suhail.learning.block_entity.MultiblockControllerBE;
-import com.suhail.learning.block_entity.MultiblockPartBE;
 import com.suhail.learning.recipe.UniversalProcessorRecipe;
 import com.suhail.learning.recipe.UniversalProcessorRecipeSerializer;
+import com.suhail.learning.util.SlotsLayout;
+import com.suhail.learning.util.caps.EnergyCapDefinition;
+import com.suhail.learning.util.caps.FluidCapDefinition;
+import com.suhail.learning.util.caps.ItemCapDefinition;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.core.Holder;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterial;
-import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
-import net.neoforged.neoforge.network.IContainerFactory;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -35,6 +29,8 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
+import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
+import net.neoforged.neoforge.network.IContainerFactory;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -42,8 +38,8 @@ import org.apache.commons.lang3.function.TriFunction;
 
 import java.util.Set;
 import java.util.function.BiFunction;
-import java.util.function.Supplier;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static com.suhail.learning.Main.rl;
 import static com.suhail.learning.setup.ModEntries.ENTRIES;
@@ -130,11 +126,30 @@ public class ModEntryBuilder {
         return b;
     }
 
-    public ModEntryBuilder sword(BiFunction<Tier, Item.Properties, ? extends Item> factory)   { this.swordFactory = factory;   return this; }
-    public ModEntryBuilder pickaxe(BiFunction<Tier, Item.Properties, ? extends Item> factory) { this.pickaxeFactory = factory; return this; }
-    public ModEntryBuilder axe(BiFunction<Tier, Item.Properties, ? extends Item> factory)     { this.axeFactory = factory;     return this; }
-    public ModEntryBuilder shovel(BiFunction<Tier, Item.Properties, ? extends Item> factory)  { this.shovelFactory = factory;  return this; }
-    public ModEntryBuilder hoe(BiFunction<Tier, Item.Properties, ? extends Item> factory)     { this.hoeFactory = factory;     return this; }
+    public ModEntryBuilder sword(BiFunction<Tier, Item.Properties, ? extends Item> factory) {
+        this.swordFactory = factory;
+        return this;
+    }
+
+    public ModEntryBuilder pickaxe(BiFunction<Tier, Item.Properties, ? extends Item> factory) {
+        this.pickaxeFactory = factory;
+        return this;
+    }
+
+    public ModEntryBuilder axe(BiFunction<Tier, Item.Properties, ? extends Item> factory) {
+        this.axeFactory = factory;
+        return this;
+    }
+
+    public ModEntryBuilder shovel(BiFunction<Tier, Item.Properties, ? extends Item> factory) {
+        this.shovelFactory = factory;
+        return this;
+    }
+
+    public ModEntryBuilder hoe(BiFunction<Tier, Item.Properties, ? extends Item> factory) {
+        this.hoeFactory = factory;
+        return this;
+    }
 
     public ModEntryBuilder toolFactory(BiFunction<Tier, Item.Properties, ? extends Item> factory) {
         this.swordFactory = factory;
@@ -145,10 +160,25 @@ public class ModEntryBuilder {
         return this;
     }
 
-    public ModEntryBuilder helmet(TriFunction<Holder<ArmorMaterial>, ArmorItem.Type, Item.Properties, ? extends Item> factory)     { this.helmetFactory = factory;     return this; }
-    public ModEntryBuilder chestplate(TriFunction<Holder<ArmorMaterial>, ArmorItem.Type, Item.Properties, ? extends Item> factory) { this.chestplateFactory = factory; return this; }
-    public ModEntryBuilder leggings(TriFunction<Holder<ArmorMaterial>, ArmorItem.Type, Item.Properties, ? extends Item> factory)   { this.leggingsFactory = factory;   return this; }
-    public ModEntryBuilder boots(TriFunction<Holder<ArmorMaterial>, ArmorItem.Type, Item.Properties, ? extends Item> factory)      { this.bootsFactory = factory;      return this; }
+    public ModEntryBuilder helmet(TriFunction<Holder<ArmorMaterial>, ArmorItem.Type, Item.Properties, ? extends Item> factory) {
+        this.helmetFactory = factory;
+        return this;
+    }
+
+    public ModEntryBuilder chestplate(TriFunction<Holder<ArmorMaterial>, ArmorItem.Type, Item.Properties, ? extends Item> factory) {
+        this.chestplateFactory = factory;
+        return this;
+    }
+
+    public ModEntryBuilder leggings(TriFunction<Holder<ArmorMaterial>, ArmorItem.Type, Item.Properties, ? extends Item> factory) {
+        this.leggingsFactory = factory;
+        return this;
+    }
+
+    public ModEntryBuilder boots(TriFunction<Holder<ArmorMaterial>, ArmorItem.Type, Item.Properties, ? extends Item> factory) {
+        this.bootsFactory = factory;
+        return this;
+    }
 
     public ModEntryBuilder armorFactory(TriFunction<Holder<ArmorMaterial>, ArmorItem.Type, Item.Properties, ? extends Item> factory) {
         this.helmetFactory = factory;
@@ -164,7 +194,7 @@ public class ModEntryBuilder {
     }
 
     public ModEntryBuilder ingot() {
-        if(material == null) {
+        if (material == null) {
             material(0);
         }
         material.setIngotSupplier(() -> new Item(new Item.Properties()));
@@ -172,7 +202,7 @@ public class ModEntryBuilder {
     }
 
     public ModEntryBuilder gem() {
-        if(material == null) {
+        if (material == null) {
             material(0);
         }
         material.setGemSupplier(() -> new Item(new Item.Properties()));
@@ -180,7 +210,7 @@ public class ModEntryBuilder {
     }
 
     public ModEntryBuilder dust() {
-        if(material == null) {
+        if (material == null) {
             material(0);
         }
         material.setDustSupplier(() -> new Item(new Item.Properties()));
@@ -188,7 +218,7 @@ public class ModEntryBuilder {
     }
 
     public ModEntryBuilder nugget() {
-        if(material == null) {
+        if (material == null) {
             material(0);
         }
         material.setNuggetSupplier(() -> new Item(new Item.Properties()));
@@ -196,7 +226,7 @@ public class ModEntryBuilder {
     }
 
     public ModEntryBuilder rawOre() {
-        if(material == null) {
+        if (material == null) {
             material(0);
         }
         material.setRawOreSupplier(() -> new Item(new Item.Properties()));
@@ -204,7 +234,7 @@ public class ModEntryBuilder {
     }
 
     public ModEntryBuilder plate() {
-        if(material == null) {
+        if (material == null) {
             material(0);
         }
         material.setPlateSupplier(() -> new Item(new Item.Properties()));
@@ -212,7 +242,7 @@ public class ModEntryBuilder {
     }
 
     public ModEntryBuilder ore() {
-        if(material == null) {
+        if (material == null) {
             material(0);
         }
         BlockBehaviour.Properties oreProps = BlockBehaviour.Properties.of()
@@ -225,7 +255,7 @@ public class ModEntryBuilder {
     }
 
     public ModEntryBuilder storageBlock() {
-        if(material == null) {
+        if (material == null) {
             material(0);
         }
         BlockBehaviour.Properties blockProps = BlockBehaviour.Properties.of()
@@ -238,7 +268,7 @@ public class ModEntryBuilder {
     }
 
     public ModEntryBuilder fluid() {
-        if(material == null) {
+        if (material == null) {
             material(0);
         }
         material.setFluidDefinition(FluidDefinition.metal());
@@ -246,7 +276,7 @@ public class ModEntryBuilder {
     }
 
     public ModEntryBuilder fluid(FluidDefinition fluidDefinition) {
-        if(material == null) {
+        if (material == null) {
             material(0);
         }
         material.setFluidDefinition(fluidDefinition);
@@ -254,7 +284,7 @@ public class ModEntryBuilder {
     }
 
     public ModEntryBuilder worldgenConfig(int minHeight, int maxHeight, int qty) {
-        if(material == null) {
+        if (material == null) {
             material(0);
         }
         material.worldgenConfig(minHeight, maxHeight, qty);
@@ -411,7 +441,7 @@ public class ModEntryBuilder {
         // Register item - use provided supplier or create BlockItem
         if (itemSupplier != null) {
             item = ITEMS.register(name, itemSupplier);
-        } else if(finalBlock != null) {
+        } else if (finalBlock != null) {
             item = ITEMS.register(name, () -> new BlockItem(finalBlock.get(), new Item.Properties()));
         }
 

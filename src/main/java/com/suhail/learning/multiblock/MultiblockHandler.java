@@ -29,8 +29,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static com.suhail.learning.Main.TICK_COUNTER;
-
 /**
  * Singleton manager: per-level executor for off-main-thread {@code tickServer},
  * active instances by controller position, and a structure-position index for O(1)
@@ -43,7 +41,8 @@ public final class MultiblockHandler {
     private static final Map<ResourceKey<Level>, Map<Long, MultiblockInstance>> INSTANCES = new ConcurrentHashMap<>();
     private static final Map<ResourceKey<Level>, Map<Long, Long>> STRUCTURE_INDEX = new ConcurrentHashMap<>();
 
-    private MultiblockHandler() {}
+    private MultiblockHandler() {
+    }
 
     @SubscribeEvent
     public static void onLevelLoad(LevelEvent.Load event) {
@@ -90,7 +89,9 @@ public final class MultiblockHandler {
         if (instance != null) instance.onStructureBlockChanged(level, BlockPos.of(controllerKey), changed);
     }
 
-    /** Initialize a new multiblock at the controller position. Attempts immediate validation. */
+    /**
+     * Initialize a new multiblock at the controller position. Attempts immediate validation.
+     */
     public static void initMultiblock(ServerLevel level, BlockPos controllerPos, Direction facing, MultiblockEntry entry) {
         ResourceKey<Level> dim = level.dimension();
         Map<Long, MultiblockInstance> map = INSTANCES.computeIfAbsent(dim, k -> new ConcurrentHashMap<>());
@@ -98,7 +99,9 @@ public final class MultiblockHandler {
         map.put(controllerPos.asLong(), instance);
     }
 
-    /** Destroy a multiblock. Called on controller-block removal. */
+    /**
+     * Destroy a multiblock. Called on controller-block removal.
+     */
     public static void destroyMultiblock(ServerLevel level, BlockPos controllerPos) {
         ResourceKey<Level> dim = level.dimension();
         Map<Long, MultiblockInstance> map = INSTANCES.get(dim);
@@ -113,9 +116,11 @@ public final class MultiblockHandler {
         instance.cache.clear();
     }
 
-    /** Restore an instance on world load from a serialized cache tag. No re-validation. */
+    /**
+     * Restore an instance on world load from a serialized cache tag. No re-validation.
+     */
     public static void restoreMultiblock(ServerLevel level, BlockPos controllerPos, Direction facing,
-                                          MultiblockEntry entry, CompoundTag cacheNbt, HolderLookup.Provider registries) {
+                                         MultiblockEntry entry, CompoundTag cacheNbt, HolderLookup.Provider registries) {
         ResourceKey<Level> dim = level.dimension();
         Map<Long, MultiblockInstance> map = INSTANCES.computeIfAbsent(dim, k -> new ConcurrentHashMap<>());
         MultiblockInstance instance = new MultiblockInstance(entry, facing);
@@ -130,7 +135,9 @@ public final class MultiblockHandler {
         map.put(controllerPos.asLong(), instance);
     }
 
-    /** Per-tick submission of {@code logic.tickServer} to the level executor. */
+    /**
+     * Per-tick submission of {@code logic.tickServer} to the level executor.
+     */
     public static void submitTick(ServerLevel level, BlockPos controllerPos) {
         Map<Long, MultiblockInstance> map = INSTANCES.get(level.dimension());
         if (map == null) return;
@@ -143,13 +150,13 @@ public final class MultiblockHandler {
         ex.submit(() -> {
             try {
                 if (!instance.formed) {
-                    if (TICK_COUNTER % 5 == 0) {
+                    if (Main.getTickCounter() % 5 == 0) {
                         instance.tryValidate(level, controllerPos);
                     }
                     return;
                 }
                 logic.tickServer(level, controllerPos, cache);
-            } catch (Throwable t) {
+            } catch (Exception t) {
                 Main.LOGGER.error("Multiblock tickServer error at {}", controllerPos, t);
             }
         });
@@ -184,7 +191,9 @@ public final class MultiblockHandler {
                 new PacketMultiblockBroken(controllerPos));
     }
 
-    /** Internal instance state. Package-private - exposed only via {@link #getInstance}. */
+    /**
+     * Internal instance state. Package-private - exposed only via {@link #getInstance}.
+     */
     public static final class MultiblockInstance {
         public final MultiblockEntry entry;
         public final IMultiblockValidator validator;

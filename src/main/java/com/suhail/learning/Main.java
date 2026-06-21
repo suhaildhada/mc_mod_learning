@@ -1,41 +1,39 @@
 package com.suhail.learning;
 
+import com.mojang.logging.LogUtils;
 import com.suhail.learning.block_entity.GlobalBlockEntity;
-import com.suhail.learning.config.*;
+import com.suhail.learning.block_entity.MultiblockPartBE;
 import com.suhail.learning.compat.cc.CCCompatHandler;
+import com.suhail.learning.config.*;
 import com.suhail.learning.handler.event.ServerEvents;
 import com.suhail.learning.multiblock.MultiblockEntry;
 import com.suhail.learning.multiblock.MultiblockRegistry;
-import com.suhail.learning.block_entity.MultiblockPartBE;
+import com.suhail.learning.network.PacketAE2PatternTransfer;
 import com.suhail.learning.network.PacketMultiblockBroken;
 import com.suhail.learning.network.PacketMultiblockFormed;
-import com.suhail.learning.network.PacketAE2PatternTransfer;
 import com.suhail.learning.network.PacketSideConfigToggle;
 import com.suhail.learning.registration.ModEntry;
 import com.suhail.learning.setup.ModEntries;
 import com.suhail.learning.setup.Registers;
 import com.suhail.learning.util.MultiblocksProvider;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.fml.loading.FMLEnvironment;
-import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
-import net.neoforged.neoforge.event.AddReloadListenerEvent;
-import org.slf4j.Logger;
-
-import com.mojang.logging.LogUtils;
-
 import net.minecraft.world.item.CreativeModeTabs;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
-import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
+import org.slf4j.Logger;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(Main.MODID)
@@ -183,7 +181,7 @@ public class Main {
     }
 
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
-        for (ModEntry entry: ModEntries.ENTRIES.values()) {
+        for (ModEntry entry : ModEntries.ENTRIES.values()) {
             if (entry.materialEntry() != null) {
                 var mat = entry.materialEntry();
                 String matName = mat.name;
@@ -206,14 +204,13 @@ public class Main {
                 }
                 continue;
             }
-            if(entry.hasBlockEntity()) {
-                if (!Processors.isEnabled(entry.name())) continue;
+            if (entry.hasBlockEntity() && Processors.isEnabled(entry.name())) {
                 if (event.getTabKey() == CreativeModeTabs.FUNCTIONAL_BLOCKS) {
                     event.accept(entry.item());
                 }
                 continue;
             }
-            if(entry.hasBlock()) {
+            if (entry.hasBlock()) {
                 if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
                     event.accept(entry.item());
                 }
@@ -242,12 +239,10 @@ public class Main {
                 }
                 continue;
             }
-            if(entry.hasItem()) {
-                if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
+            if (entry.hasItem() && event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
                     event.accept(entry.item());
                 }
-                continue;
-            }
+
         }
     }
 
@@ -257,5 +252,18 @@ public class Main {
 
     public static ResourceLocation rlFromString(String name) {
         return ResourceLocation.tryParse(name);
+    }
+
+    public static int getTickCounter() {
+        return TICK_COUNTER;
+    }
+
+    public static void updateTickCounter() {
+        if (TICK_COUNTER + 1 == Integer.MAX_VALUE) {
+            TICK_COUNTER = 0;
+        } else {
+            TICK_COUNTER++;
+        }
+
     }
 }
