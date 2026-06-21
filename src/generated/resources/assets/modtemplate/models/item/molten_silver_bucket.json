@@ -1,5 +1,0 @@
-{
-  "parent": "neoforge:item/bucket",
-  "fluid": "modtemplate:molten_silver",
-  "loader": "neoforge:fluid_container"
-}

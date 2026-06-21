@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable_with_bottom",
+  "textures": {
+    "bottom": "learning:block/foo_controller/top",
+    "front": "learning:block/foo_controller/front",
+    "side": "learning:block/foo_controller/side",
+    "top": "learning:block/foo_controller/bottom"
+  }
+}

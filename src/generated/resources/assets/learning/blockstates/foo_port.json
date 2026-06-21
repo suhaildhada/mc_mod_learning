@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "learning:block/foo_port"
+    }
+  }
+}

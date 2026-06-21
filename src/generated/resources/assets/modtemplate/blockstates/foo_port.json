@@ -1,7 +1,0 @@
-{
-  "variants": {
-    "": {
-      "model": "modtemplate:block/foo_port"
-    }
-  }
-}
