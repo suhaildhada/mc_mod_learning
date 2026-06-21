@@ -22,6 +22,7 @@ import org.jspecify.annotations.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.suhail.learning.Main.MODID;
 import static com.suhail.learning.Main.rl;
 
 public class MultiblockControllerScreen extends AbstractContainerScreen<MultiblockControllerContainer> {
@@ -101,8 +102,8 @@ public class MultiblockControllerScreen extends AbstractContainerScreen<Multiblo
     private void renderAssemblyState(GuiGraphics guiGraphics) {
         boolean formed = menu.isFormed();
         Component label = formed
-                ? Component.translatable("screen.modtemplate.multiblock.assembled").withStyle(ChatFormatting.GREEN)
-                : Component.translatable("screen.modtemplate.multiblock.not_assembled").withStyle(ChatFormatting.RED);
+                ? Component.translatable("screen." + MODID + ".multiblock.assembled").withStyle(ChatFormatting.GREEN)
+                : Component.translatable("screen." + MODID + ".multiblock.not_assembled").withStyle(ChatFormatting.RED);
         int textWidth = font.width(label);
         int x = (imageWidth - textWidth) / 2;
         int y = imageHeight - 102;
@@ -116,14 +117,14 @@ public class MultiblockControllerScreen extends AbstractContainerScreen<Multiblo
     }
 
     private void renderFluidTanks(GuiGraphics guiGraphics, int x, int y,
-                                   FluidCapabilityHandler tanks, boolean tooltip, int mouseX, int mouseY) {
+                                  FluidCapabilityHandler tanks, boolean tooltip, int mouseX, int mouseY) {
         SlotsLayout layout = menu.getLayout();
         if (layout == null) return;
 
         ModEntry entry = ModEntries.get(menu.getBlockEntity().name);
-        int inputItemCount  = entry.itemCap()  != null ? entry.itemCap().inputSlots        : 0;
+        int inputItemCount = entry.itemCap() != null ? entry.itemCap().inputSlots : 0;
         int inputFluidCount = entry.fluidCap() != null ? entry.fluidCap().inputTanks.size() : 0;
-        int outputItemCount = entry.itemCap()  != null ? entry.itemCap().outputSlots        : 0;
+        int outputItemCount = entry.itemCap() != null ? entry.itemCap().outputSlots : 0;
 
         int outputFluidOffset = inputItemCount + inputFluidCount + outputItemCount;
 

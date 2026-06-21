@@ -77,17 +77,17 @@ public class ModLanguageProvider  extends LanguageProvider {
                             ? "molten_" + materialEntry.name
                             : materialEntry.name + "_fluid";
                     add(fluid.bucket().get(), convertToName(fluidName + "_bucket"));
-                    add("fluid_type.modtemplate." + fluidName, convertToName(fluidName));
+                    add("fluid_type." + MODID + "." + fluidName, convertToName(fluidName));
                 }
             }
         }
     }
 
     private void labels() {
-        add("screen.modtemplate.side_config", "Side Configuration");
-        add("screen.modtemplate.slot_selection", "Select Slot");
-        add("screen.modtemplate.multiblock.assembled", "Assembled");
-        add("screen.modtemplate.multiblock.not_assembled", "Not Assembled");
+        add("screen." + MODID + ".side_config", "Side Configuration");
+        add("screen." + MODID + ".slot_selection", "Select Slot");
+        add("screen." + MODID + ".multiblock.assembled", "Assembled");
+        add("screen." + MODID + ".multiblock.not_assembled", "Not Assembled");
         add("tooltip.fluid.empty", "Empty");
     }
 }

@@ -12,6 +12,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 
+import static com.suhail.learning.Main.MODID;
+
 public class UniversalProcessorBE extends GlobalBlockEntity implements MenuProvider {
 
     public UniversalProcessorBE(BlockPos pos, BlockState state, String name) {
@@ -20,7 +22,7 @@ public class UniversalProcessorBE extends GlobalBlockEntity implements MenuProvi
 
     @Override
     public @NonNull Component getDisplayName() {
-        return Component.translatable("block.modtemplate." + name);
+        return Component.translatable("block." + MODID + "." + name);
     }
 
     @Nullable

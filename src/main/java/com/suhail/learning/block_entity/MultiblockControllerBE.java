@@ -24,6 +24,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 
+import static com.suhail.learning.Main.MODID;
 import static net.minecraft.world.level.block.Block.UPDATE_CLIENTS;
 
 /**
@@ -32,7 +33,9 @@ import static net.minecraft.world.level.block.Block.UPDATE_CLIENTS;
  */
 public class MultiblockControllerBE extends GlobalBlockEntity implements MenuProvider {
 
-    /** Buffered cache NBT read in {@link #loadAdditional} before the instance is built in {@link #onLoad}. */
+    /**
+     * Buffered cache NBT read in {@link #loadAdditional} before the instance is built in {@link #onLoad}.
+     */
     private CompoundTag pendingCacheNbt;
     private HolderLookup.Provider pendingRegistries;
 
@@ -47,7 +50,9 @@ public class MultiblockControllerBE extends GlobalBlockEntity implements MenuPro
         return name;
     }
 
-    /** Called from the controller block on first placement (server side). */
+    /**
+     * Called from the controller block on first placement (server side).
+     */
     public void onControllerPlaced(ServerLevel level) {
         MultiblockEntry entry = MultiblockRegistry.getByController(name);
         if (entry == null) return;
@@ -55,7 +60,9 @@ public class MultiblockControllerBE extends GlobalBlockEntity implements MenuPro
         setChanged();
     }
 
-    /** Called from the controller block on removal. */
+    /**
+     * Called from the controller block on removal.
+     */
     public void onControllerRemoved(ServerLevel level) {
         MultiblockHandler.destroyMultiblock(level, worldPosition);
     }
@@ -146,7 +153,7 @@ public class MultiblockControllerBE extends GlobalBlockEntity implements MenuPro
 
     @Override
     public @NonNull Component getDisplayName() {
-        return Component.translatable("block.modtemplate." + name);
+        return Component.translatable("block." + MODID + "." + name);
     }
 
     @Nullable

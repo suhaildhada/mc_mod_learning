@@ -15,7 +15,9 @@ import com.suhail.learning.registration.ModEntry;
 import com.suhail.learning.setup.ModEntries;
 import com.suhail.learning.setup.Registers;
 import com.suhail.learning.util.MultiblocksProvider;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -32,7 +34,11 @@ import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import org.slf4j.Logger;
+
+import static com.suhail.learning.setup.ModEntries.EXAMPLE_ITEM;
+import static com.suhail.learning.setup.Registers.CREATIVE_MODE_TABS;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(Main.MODID)
@@ -42,14 +48,14 @@ public class Main {
     public static int TICK_COUNTER = 0;
 
     // Creates a creative tab with the id "learning:example_tab" for the example item, that is placed after the combat tab
-/*    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS.register("example_tab", () -> CreativeModeTab.builder()
-            .title(Component.translatable("itemGroup.modtemplate")) //The language key for the title of your CreativeModeTab
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS.register("example_tab", () -> CreativeModeTab.builder()
+            .title(Component.translatable("itemGroup." + MODID)) //The language key for the title of your CreativeModeTab
             .withTabsBefore(CreativeModeTabs.COMBAT)
-            .icon(() -> EXAMPLE_ITEM.get().getDefaultInstance())
+            .icon(() -> EXAMPLE_ITEM.item().get().getDefaultInstance())
             .displayItems((parameters, output) -> {
-                output.accept(EXAMPLE_ITEM.get()); // Add the example item to the tab. For your own tabs, this method is preferred over the event
-                output.accept(EXAMPLE_MACHINE_BLOCK_ITEM.get());
-            }).build());*/
+                output.accept(EXAMPLE_ITEM.item().get()); // Add the example item to the tab. For your own tabs, this method is preferred over the event
+//                output.accept(EXAMPLE_MACHINE_BLOCK_ITEM.get());
+            }).build());
 
     public Main(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);

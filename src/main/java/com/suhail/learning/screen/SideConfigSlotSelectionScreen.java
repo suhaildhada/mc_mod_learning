@@ -16,6 +16,7 @@ import org.jspecify.annotations.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.suhail.learning.Main.MODID;
 import static com.suhail.learning.Main.rl;
 import static com.suhail.learning.util.TextUtils.getMutableComponent;
 
@@ -37,7 +38,7 @@ public class SideConfigSlotSelectionScreen extends Screen {
     private final List<SlotEntry> slotEntries = new ArrayList<>();
 
     public SideConfigSlotSelectionScreen(AbstractContainerScreen<UniversalProcessorContainer> parent) {
-        super(getMutableComponent("screen.modtemplate.slot_selection"));
+        super(getMutableComponent("screen." + MODID + ".slot_selection"));
         this.parentScreen = parent;
         width  = WIN_W;
         height = WIN_H;

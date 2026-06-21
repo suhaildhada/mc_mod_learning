@@ -21,6 +21,8 @@ import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 
+import static com.suhail.learning.Main.MODID;
+
 /** Block entity for non-controller multiblock parts (ports). Stores its controller's position. */
 public class MultiblockPartBE extends GlobalBlockEntity implements MenuProvider {
 
@@ -83,7 +85,7 @@ public class MultiblockPartBE extends GlobalBlockEntity implements MenuProvider 
 
     @Override
     public @NonNull Component getDisplayName() {
-        return Component.translatable("block.modtemplate." + name);
+        return Component.translatable("block." + MODID + "." + name);
     }
 
     @Nullable
