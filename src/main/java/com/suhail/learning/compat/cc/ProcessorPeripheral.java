@@ -10,6 +10,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +24,7 @@ public class ProcessorPeripheral implements IPeripheral {
     }
 
     @Override
-    public String getType() {
+    public @NonNull String getType() {
         return be.name;
     }
 
@@ -33,10 +34,10 @@ public class ProcessorPeripheral implements IPeripheral {
     }
 
     @Override
-    public void attach(IComputerAccess computer) {}
+    public void attach(@NonNull IComputerAccess computer) {}
 
     @Override
-    public void detach(IComputerAccess computer) {}
+    public void detach(@NonNull IComputerAccess computer) {}
 
     @LuaFunction
     public final String getName() {

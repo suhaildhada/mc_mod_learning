@@ -22,6 +22,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.neoforged.fml.ModList;
+import org.jspecify.annotations.NonNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +35,7 @@ public class ModJeiPlugin implements IModPlugin {
     private final Map<String, RecipeType<UniversalProcessorRecipe>> recipeTypes = new HashMap<>();
 
     @Override
-    public ResourceLocation getPluginUid() {
+    public @NonNull ResourceLocation getPluginUid() {
         return Main.rl("jei_plugin");
     }
 
@@ -57,7 +58,7 @@ public class ModJeiPlugin implements IModPlugin {
     }
 
     @Override
-    public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
+    public void registerRecipeCatalysts(@NonNull IRecipeCatalystRegistration registration) {
         for (ModEntry entry : ModEntries.ENTRIES.values()) {
             if (!entry.hasRecipes() || !entry.hasItem() || !Processors.isEnabled(entry.name())) continue;
             RecipeType<UniversalProcessorRecipe> jeiType = getOrCreateRecipeType(entry);
@@ -66,7 +67,7 @@ public class ModJeiPlugin implements IModPlugin {
     }
 
     @Override
-    public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
+    public void registerRecipeTransferHandlers(@NonNull IRecipeTransferRegistration registration) {
         if (!ModList.get().isLoaded("ae2")) return;
         for (ModEntry entry : ModEntries.ENTRIES.values()) {
             if (!entry.hasRecipes() || !Processors.isEnabled(entry.name())) continue;
@@ -77,7 +78,7 @@ public class ModJeiPlugin implements IModPlugin {
 
     @SuppressWarnings("unchecked")
     @Override
-    public void registerRecipes(IRecipeRegistration registration) {
+    public void registerRecipes(@NonNull IRecipeRegistration registration) {
         RecipeManager recipeManager = Minecraft.getInstance().level.getRecipeManager();
 
         for (ModEntry entry : ModEntries.ENTRIES.values()) {

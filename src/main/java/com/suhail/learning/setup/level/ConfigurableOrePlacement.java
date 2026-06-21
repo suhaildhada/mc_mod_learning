@@ -11,6 +11,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
+import org.jspecify.annotations.NonNull;
 
 import java.util.stream.Stream;
 
@@ -33,7 +34,7 @@ public class ConfigurableOrePlacement extends PlacementModifier {
     }
 
     @Override
-    public Stream<BlockPos> getPositions(PlacementContext ctx, RandomSource rand, BlockPos pos) {
+    public @NonNull Stream<BlockPos> getPositions(@NonNull PlacementContext ctx, @NonNull RandomSource rand, @NonNull BlockPos pos) {
         WorldGen.OreGenConfig config = WorldGen.ORE_CONFIGS.get(materialName);
         if (config == null) return Stream.empty();
         int minH = config.minHeight().get();
@@ -43,7 +44,7 @@ public class ConfigurableOrePlacement extends PlacementModifier {
     }
 
     @Override
-    public PlacementModifierType<?> type() {
+    public @NonNull PlacementModifierType<?> type() {
         return Registers.CONFIGURABLE_ORE_PLACEMENT.get();
     }
 }

@@ -15,6 +15,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,22 +30,22 @@ public class JEI2PatternEncoderTransfer implements IRecipeTransferHandler<Patter
     }
 
     @Override
-    public Class<PatternEncodingTermMenu> getContainerClass() {
+    public @NonNull Class<PatternEncodingTermMenu> getContainerClass() {
         return PatternEncodingTermMenu.class;
     }
 
     @Override
-    public Optional<MenuType<PatternEncodingTermMenu>> getMenuType() {
+    public @NonNull Optional<MenuType<PatternEncodingTermMenu>> getMenuType() {
         return Optional.of(PatternEncodingTermMenu.TYPE);
     }
 
     @Override
-    public RecipeType<UniversalProcessorRecipe> getRecipeType() {
+    public @NonNull RecipeType<UniversalProcessorRecipe> getRecipeType() {
         return recipeType;
     }
 
     @Override
-    public @Nullable IRecipeTransferError transferRecipe(PatternEncodingTermMenu container, UniversalProcessorRecipe recipe, IRecipeSlotsView recipeSlots, Player player, boolean maxTransfer, boolean doTransfer) {
+    public @Nullable IRecipeTransferError transferRecipe(@NonNull PatternEncodingTermMenu container, @NonNull UniversalProcessorRecipe recipe, @NonNull IRecipeSlotsView recipeSlots, @NonNull Player player, boolean maxTransfer, boolean doTransfer) {
         if (!doTransfer) {
             return null;
         }

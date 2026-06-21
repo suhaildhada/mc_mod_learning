@@ -4,6 +4,7 @@ import net.minecraft.core.Direction;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public class FluidHandlerWrapper implements IFluidHandler {
 
@@ -36,7 +37,7 @@ public class FluidHandlerWrapper implements IFluidHandler {
     }
 
     @Override
-    public int fill(@NotNull FluidStack resource, FluidAction action) {
+    public int fill(@NotNull FluidStack resource, @NonNull FluidAction action) {
         if (resource.isEmpty()) return 0;
         int remaining = resource.getAmount();
         int totalFilled = 0;
@@ -52,7 +53,7 @@ public class FluidHandlerWrapper implements IFluidHandler {
     }
 
     @Override
-    public @NotNull FluidStack drain(@NotNull FluidStack resource, FluidAction action) {
+    public @NotNull FluidStack drain(@NotNull FluidStack resource, @NonNull FluidAction action) {
         if (resource.isEmpty()) return FluidStack.EMPTY;
         for (int tank = 0; tank < handler.getTanks(); tank++) {
             if (!handler.canExtractFromSide(tank, side)) continue;
@@ -65,7 +66,7 @@ public class FluidHandlerWrapper implements IFluidHandler {
     }
 
     @Override
-    public @NotNull FluidStack drain(int maxDrain, FluidAction action) {
+    public @NotNull FluidStack drain(int maxDrain, @NonNull FluidAction action) {
         for (int tank = 0; tank < handler.getTanks(); tank++) {
             if (!handler.canExtractFromSide(tank, side)) continue;
             FluidStack inTank = handler.getFluidInTank(tank);

@@ -12,6 +12,7 @@ import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.crafting.SizedIngredient;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
+import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ public record UniversalProcessorRecipe(String processorName, List<SizedIngredien
                                        int energyPerTick) implements Recipe<ProcessorRecipeInput> {
 
     @Override
-    public boolean matches(ProcessorRecipeInput input, Level level) {
+    public boolean matches(@NonNull ProcessorRecipeInput input, Level level) {
         if (level.isClientSide()) return false;
 
         // Check all item inputs match
@@ -45,7 +46,7 @@ public record UniversalProcessorRecipe(String processorName, List<SizedIngredien
     }
 
     @Override
-    public ItemStack assemble(ProcessorRecipeInput input, HolderLookup.Provider registries) {
+    public @NonNull ItemStack assemble(@NonNull ProcessorRecipeInput input, HolderLookup.@NonNull Provider registries) {
         return itemOutputs.isEmpty() ? ItemStack.EMPTY : itemOutputs.getFirst().copy();
     }
 
@@ -55,12 +56,12 @@ public record UniversalProcessorRecipe(String processorName, List<SizedIngredien
     }
 
     @Override
-    public ItemStack getResultItem(HolderLookup.Provider registries) {
+    public @NonNull ItemStack getResultItem(HolderLookup.@NonNull Provider registries) {
         return itemOutputs.isEmpty() ? ItemStack.EMPTY : itemOutputs.getFirst().copy();
     }
 
     @Override
-    public NonNullList<Ingredient> getIngredients() {
+    public @NonNull NonNullList<Ingredient> getIngredients() {
         NonNullList<Ingredient> list = NonNullList.create();
         for (SizedIngredient si : itemInputs) {
             list.add(si.ingredient());
@@ -69,12 +70,12 @@ public record UniversalProcessorRecipe(String processorName, List<SizedIngredien
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer() {
+    public @NonNull RecipeSerializer<?> getSerializer() {
         return ModEntries.get(processorName).recipeSerializer().get();
     }
 
     @Override
-    public RecipeType<?> getType() {
+    public @NonNull RecipeType<?> getType() {
         return ModEntries.get(processorName).recipeType().get();
     }
 

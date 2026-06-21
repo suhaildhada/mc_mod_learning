@@ -26,6 +26,7 @@ import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtension
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
+import org.jspecify.annotations.NonNull;
 
 // This class will not load on dedicated servers. Accessing client side code from here is safe.
 @Mod(value = Main.MODID, dist = Dist.CLIENT)
@@ -82,12 +83,12 @@ public class Client {
                 if (fluidType instanceof MaterialFluidType mft) {
                     event.registerFluidType(new IClientFluidTypeExtensions() {
                         @Override
-                        public ResourceLocation getStillTexture() {
+                        public @NonNull ResourceLocation getStillTexture() {
                             return mft.getStillTexture();
                         }
 
                         @Override
-                        public ResourceLocation getFlowingTexture() {
+                        public @NonNull ResourceLocation getFlowingTexture() {
                             return mft.getFlowingTexture();
                         }
 

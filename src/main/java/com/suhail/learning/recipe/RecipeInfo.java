@@ -11,6 +11,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.neoforged.fml.loading.FMLEnvironment;
@@ -22,7 +23,7 @@ import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.Map;
 
 import static com.suhail.learning.Main.rlFromString;
 
@@ -265,21 +266,21 @@ public class RecipeInfo {
     }
 
     @SuppressWarnings("unchecked")
-    public HashMap<String, Recipe<?>> getRecipes() {
-        if (allRecipes.isEmpty()) {
-            Level level = getLevel();
-            if (level != null) {
-                ModEntry entry = ModEntries.get(be.name);
-                if (entry != null) {
-                    var recipeType = (RecipeType<UniversalProcessorRecipe>) entry.recipeType().get();
-                    level.getRecipeManager().getAllRecipesFor(recipeType).forEach(r -> {
-                        if (r.value().isComplete()) {
-                            allRecipes.put(r.id().toString(), r.value());
-                        }
-                    });
-                }
-            }
+    public Map<String, Recipe<?>> getRecipes() {
+        Level level = getLevel();
+        ModEntry entry = ModEntries.get(be.name);
+
+        if (!allRecipes.isEmpty() || level == null || entry == null) {
+            return allRecipes;
         }
+
+        var recipeType = (RecipeType<UniversalProcessorRecipe>) entry.recipeType().get();
+        level.getRecipeManager().getAllRecipesFor(recipeType)
+                .forEach(r -> {
+            if (r.value().isComplete()) {
+                allRecipes.put(r.id().toString(), r.value());
+            }
+        });
         return allRecipes;
     }
 
@@ -290,11 +291,11 @@ public class RecipeInfo {
         }
         ResourceLocation id = rlFromString(recipe);
         if (getLevel() == null) return null;
-        try {
-            return getLevel().getRecipeManager().byKey(id).get().value();
-        } catch (NoSuchElementException e) {
-            return null;
-        }
+        return getLevel()
+                .getRecipeManager()
+                .byKey(id)
+                .map(RecipeHolder::value)
+                .orElse(null);
     }
 
     private Level getLevel() {
@@ -317,11 +318,11 @@ public class RecipeInfo {
     }
 
     public void load(Tag nbt) {
-        if (nbt instanceof CompoundTag) {
-            ticks = ((CompoundTag) nbt).getInt("ticks");
-            ticksNeeded = ((CompoundTag) nbt).getInt("ticksNeeded");
-            energyPerTick = ((CompoundTag) nbt).getInt("energyPerTick");
-            recipeId = ((CompoundTag) nbt).getString("recipe");
+        if (nbt instanceof CompoundTag compoundTag) {
+            ticks = compoundTag.getInt("ticks");
+            ticksNeeded = compoundTag.getInt("ticksNeeded");
+            energyPerTick = compoundTag.getInt("energyPerTick");
+            recipeId = compoundTag.getString("recipe");
             recipe = null;
             if (!recipeId.isEmpty()) {
                 recipe = getRecipeFromTag(recipeId);

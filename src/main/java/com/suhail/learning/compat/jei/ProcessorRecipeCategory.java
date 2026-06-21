@@ -18,6 +18,7 @@ import net.neoforged.neoforge.common.crafting.SizedIngredient;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Arrays;
 import java.util.List;
@@ -73,12 +74,12 @@ public class ProcessorRecipeCategory implements IRecipeCategory<UniversalProcess
     }
 
     @Override
-    public RecipeType<UniversalProcessorRecipe> getRecipeType() {
+    public @NonNull RecipeType<UniversalProcessorRecipe> getRecipeType() {
         return recipeType;
     }
 
     @Override
-    public Component getTitle() {
+    public @NonNull Component getTitle() {
         return title;
     }
 
@@ -98,7 +99,7 @@ public class ProcessorRecipeCategory implements IRecipeCategory<UniversalProcess
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, UniversalProcessorRecipe recipe, IFocusGroup focuses) {
+    public void setRecipe(@NonNull IRecipeLayoutBuilder builder, UniversalProcessorRecipe recipe, @NonNull IFocusGroup focuses) {
         int x = START_X;
         int y = START_Y;
 

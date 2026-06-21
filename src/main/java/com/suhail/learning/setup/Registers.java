@@ -19,6 +19,10 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import static com.suhail.learning.Main.MODID;
 
 public class Registers {
+    private Registers() {
+        /* This utility class should not be instantiated */
+    }
+
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MODID);
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);

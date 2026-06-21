@@ -13,6 +13,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 public class MultiblockExampleCategory implements IRecipeCategory<MultiblockStructureRecipe> {
 
@@ -37,10 +38,10 @@ public class MultiblockExampleCategory implements IRecipeCategory<MultiblockStru
     }
 
     @Override
-    public RecipeType<MultiblockStructureRecipe> getRecipeType() { return TYPE; }
+    public @NonNull RecipeType<MultiblockStructureRecipe> getRecipeType() { return TYPE; }
 
     @Override
-    public Component getTitle() { return title; }
+    public @NonNull Component getTitle() { return title; }
 
     @Override
     public @Nullable IDrawable getIcon() { return icon; }
@@ -52,11 +53,11 @@ public class MultiblockExampleCategory implements IRecipeCategory<MultiblockStru
     public int getHeight() { return background.getHeight(); }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, MultiblockStructureRecipe recipe, IFocusGroup focuses) {
+    public void setRecipe(@NonNull IRecipeLayoutBuilder builder, @NonNull MultiblockStructureRecipe recipe, @NonNull IFocusGroup focuses) {
     }
 
     @Override
-    public void draw(MultiblockStructureRecipe recipe, IRecipeSlotsView recipeSlotsView,
+    public void draw(MultiblockStructureRecipe recipe, @NonNull IRecipeSlotsView recipeSlotsView,
                      GuiGraphics graphics, double mouseX, double mouseY) {
         Component name = Component.translatable("multiblock." + Main.MODID + "." + recipe.getName());
         graphics.drawString(net.minecraft.client.Minecraft.getInstance().font, name, 2, 2, 0xFFFFFF, false);

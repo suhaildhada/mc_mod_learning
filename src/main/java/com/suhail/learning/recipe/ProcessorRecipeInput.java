@@ -3,6 +3,7 @@ package com.suhail.learning.recipe;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeInput;
 import net.neoforged.neoforge.fluids.FluidStack;
+import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class ProcessorRecipeInput implements RecipeInput {
     }
 
     @Override
-    public ItemStack getItem(int index) {
+    public @NonNull ItemStack getItem(int index) {
         if (index < 0 || index >= items.size()) {
             return ItemStack.EMPTY;
         }

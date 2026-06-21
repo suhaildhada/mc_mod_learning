@@ -5,6 +5,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.neoforged.neoforge.common.conditions.IConditionBuilder;
+import org.jspecify.annotations.NonNull;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -14,7 +15,7 @@ public class ModRecipeProvider  extends RecipeProvider implements IConditionBuil
     }
 
     @Override
-    public void buildRecipes(RecipeOutput recipeOutput) {
+    public void buildRecipes(@NonNull RecipeOutput recipeOutput) {
 
         ExampleMachineRecipes.generate(recipeOutput);
         FooMultiblockRecipes.generate(recipeOutput);

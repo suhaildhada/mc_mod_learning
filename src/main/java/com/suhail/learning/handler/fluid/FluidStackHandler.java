@@ -8,6 +8,7 @@ import net.neoforged.neoforge.common.util.INBTSerializable;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.function.Predicate;
 
@@ -152,7 +153,7 @@ public class FluidStackHandler implements IFluidHandler, INBTSerializable<Compou
      * Otherwise, tries each tank in order.
      */
     @Override
-    public int fill(@NotNull FluidStack resource, FluidAction action) {
+    public int fill(@NotNull FluidStack resource, @NonNull FluidAction action) {
         if (resource.isEmpty()) return 0;
 
         if (isExternalView()) {
@@ -215,7 +216,7 @@ public class FluidStackHandler implements IFluidHandler, INBTSerializable<Compou
      * If this is an external view, only drainable tanks are considered.
      */
     @Override
-    public @NotNull FluidStack drain(@NotNull FluidStack resource, FluidAction action) {
+    public @NotNull FluidStack drain(@NotNull FluidStack resource, @NonNull FluidAction action) {
         if (resource.isEmpty()) return FluidStack.EMPTY;
 
         if (isExternalView()) {
@@ -242,7 +243,7 @@ public class FluidStackHandler implements IFluidHandler, INBTSerializable<Compou
      * If this is an external view, only drainable tanks are considered.
      */
     @Override
-    public @NotNull FluidStack drain(int maxDrain, FluidAction action) {
+    public @NotNull FluidStack drain(int maxDrain, @NonNull FluidAction action) {
         if (maxDrain <= 0) return FluidStack.EMPTY;
 
         if (isExternalView()) {
@@ -299,7 +300,7 @@ public class FluidStackHandler implements IFluidHandler, INBTSerializable<Compou
     }
 
     @Override
-    public CompoundTag serializeNBT(HolderLookup.Provider provider) {
+    public CompoundTag serializeNBT(HolderLookup.@NonNull Provider provider) {
         ListTag tankList = new ListTag();
         for (int i = 0; i < tanks; i++) {
             if (!fluids[i].isEmpty()) {
@@ -318,7 +319,7 @@ public class FluidStackHandler implements IFluidHandler, INBTSerializable<Compou
     }
 
     @Override
-    public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt) {
+    public void deserializeNBT(HolderLookup.@NonNull Provider provider, CompoundTag nbt) {
         int size = nbt.contains("Size", Tag.TAG_INT) ? nbt.getInt("Size") : tanks;
         setSize(size);
         ListTag tankList = nbt.getList("Tanks", Tag.TAG_COMPOUND);

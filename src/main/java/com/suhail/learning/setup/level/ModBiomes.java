@@ -7,4 +7,8 @@ public class ModBiomes {
     public static void bootstrap(BootstrapContext<Biome> context) {
 
     }
+
+    private ModBiomes() {
+        /* This utility class should not be instantiated */
+    }
 }

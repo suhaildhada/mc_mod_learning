@@ -25,4 +25,8 @@ public class ModDimensions {
         NoiseGeneratorSettings overworld = NoiseGeneratorSettings.overworld(context, false, false);
 
     }
+
+    private ModDimensions() {
+        /* This utility class should not be instantiated */
+    }
 }

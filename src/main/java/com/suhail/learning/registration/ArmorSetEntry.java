@@ -44,7 +44,6 @@ public class ArmorSetEntry {
                 helmetFactory, chestplateFactory, leggingsFactory, bootsFactory);
     }
 
-    @SuppressWarnings("unchecked")
     public static ArmorSetEntry build(String name, Holder<ArmorMaterial> material, int durabilityMultiplier,
                                       TriFunction<Holder<ArmorMaterial>, ArmorItem.Type, Item.Properties, ? extends Item> helmetFactory,
                                       TriFunction<Holder<ArmorMaterial>, ArmorItem.Type, Item.Properties, ? extends Item> chestplateFactory,

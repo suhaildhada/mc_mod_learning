@@ -11,6 +11,7 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.ItemStackHandler;
+import org.jspecify.annotations.NonNull;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -58,7 +59,7 @@ public class ItemCapabilityHandler extends AbstractCapabilityHandler implements 
     }
 
     @Override
-    public void setStackInSlot(int slot, ItemStack stack) {
+    public void setStackInSlot(int slot, @NonNull ItemStack stack) {
         internal.setStackInSlot(slot, stack);
     }
 
@@ -68,17 +69,17 @@ public class ItemCapabilityHandler extends AbstractCapabilityHandler implements 
     }
 
     @Override
-    public ItemStack getStackInSlot(int slot) {
+    public @NonNull ItemStack getStackInSlot(int slot) {
         return internal.getStackInSlot(slot);
     }
 
     @Override
-    public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+    public @NonNull ItemStack insertItem(int slot, @NonNull ItemStack stack, boolean simulate) {
         return internal.insertItem(slot, stack, simulate);
     }
 
     @Override
-    public ItemStack extractItem(int slot, int amount, boolean simulate) {
+    public @NonNull ItemStack extractItem(int slot, int amount, boolean simulate) {
         return internal.extractItem(slot, amount, simulate);
     }
 
@@ -88,7 +89,7 @@ public class ItemCapabilityHandler extends AbstractCapabilityHandler implements 
     }
 
     @Override
-    public boolean isItemValid(int slot, ItemStack stack) {
+    public boolean isItemValid(int slot, @NonNull ItemStack stack) {
         return internal.isItemValid(slot, stack);
     }
 

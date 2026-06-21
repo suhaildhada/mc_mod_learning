@@ -42,4 +42,8 @@ public class ModConfiguredFeatures {
             register(context, registerKey(mat.name + "_ore"), Feature.ORE, new OreConfiguration(targets, veinSize));
         }
     }
+
+    private ModConfiguredFeatures() {
+        /* This utility class should not be instantiated */
+    }
 }

@@ -16,6 +16,7 @@ import net.neoforged.neoforge.common.crafting.SizedIngredient;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -125,23 +126,23 @@ public class UniversalProcessorRecipeBuilder implements RecipeBuilder {
     // --- RecipeBuilder overrides ---
 
     @Override
-    public RecipeBuilder unlockedBy(String name, Criterion<?> criterion) {
+    public @NonNull RecipeBuilder unlockedBy(@NonNull String name, @NonNull Criterion<?> criterion) {
         // Processor recipes don't use advancement unlocking
         return this;
     }
 
     @Override
-    public RecipeBuilder group(@Nullable String groupName) {
+    public @NonNull RecipeBuilder group(@Nullable String groupName) {
         return this;
     }
 
     @Override
-    public Item getResult() {
+    public @NonNull Item getResult() {
         return itemOutputs.isEmpty() ? null : itemOutputs.getFirst().getItem();
     }
 
     @Override
-    public void save(RecipeOutput recipeOutput, ResourceLocation id) {
+    public void save(RecipeOutput recipeOutput, @NonNull ResourceLocation id) {
         UniversalProcessorRecipe recipe = new UniversalProcessorRecipe(
                 processorName,
                 List.copyOf(itemInputs),
@@ -157,7 +158,7 @@ public class UniversalProcessorRecipeBuilder implements RecipeBuilder {
     /**
      * Convenience method: saves the recipe with an auto-generated ID based on processor name and a suffix.
      */
-    public void save(RecipeOutput recipeOutput, String recipeName) {
+    public void save(@NonNull RecipeOutput recipeOutput, @NonNull String recipeName) {
         save(recipeOutput, ResourceLocation.fromNamespaceAndPath(MODID, processorName + "/" + recipeName));
     }
 }

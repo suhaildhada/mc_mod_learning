@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import org.jspecify.annotations.NonNull;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -23,7 +24,7 @@ public class ModBlockTagProvider extends BlockTagsProvider {
     }
 
     @Override
-    public void addTags(HolderLookup.Provider provider) {
+    public void addTags(HolderLookup.@NonNull Provider provider) {
         for (ModEntry entry : ModEntries.ENTRIES.values()) {
             if (entry.hasBlock()) {
                 tag(BlockTags.MINEABLE_WITH_PICKAXE).add(entry.block().get());

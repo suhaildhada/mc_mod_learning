@@ -19,6 +19,7 @@ import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 /** Block entity for non-controller multiblock parts (ports). Stores its controller's position. */
 public class MultiblockPartBE extends GlobalBlockEntity implements MenuProvider {
@@ -81,13 +82,13 @@ public class MultiblockPartBE extends GlobalBlockEntity implements MenuProvider 
     }
 
     @Override
-    public Component getDisplayName() {
+    public @NonNull Component getDisplayName() {
         return Component.translatable("block.modtemplate." + name);
     }
 
     @Nullable
     @Override
-    public AbstractContainerMenu createMenu(int containerId, Inventory playerInventory, Player player) {
+    public AbstractContainerMenu createMenu(int containerId, @NonNull Inventory playerInventory, @NonNull Player player) {
         return new MultiblockPortContainer(containerId, playerInventory, this, containerData);
     }
 }

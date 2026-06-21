@@ -15,6 +15,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import org.jspecify.annotations.NonNull;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -26,7 +27,7 @@ public class ModItemTagProvider extends ItemTagsProvider {
     }
 
     @Override
-    public void addTags(HolderLookup.Provider provider) {
+    public void addTags(HolderLookup.@NonNull Provider provider) {
         for (ModEntry entry : ModEntries.ENTRIES.values()) {
             if (entry.toolSetEntry() instanceof ToolSetEntry toolSet) {
                 tag(ItemTags.SWORDS).add(toolSet.sword().get());

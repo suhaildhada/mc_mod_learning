@@ -48,4 +48,8 @@ public class ModPlacedFeatures {
             ));
         }
     }
+
+    private ModPlacedFeatures() {
+        /* This utility class should not be instantiated */
+    }
 }

@@ -10,6 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 public class UniversalProcessorBE extends GlobalBlockEntity implements MenuProvider {
 
@@ -18,13 +19,13 @@ public class UniversalProcessorBE extends GlobalBlockEntity implements MenuProvi
     }
 
     @Override
-    public Component getDisplayName() {
+    public @NonNull Component getDisplayName() {
         return Component.translatable("block.modtemplate." + name);
     }
 
     @Nullable
     @Override
-    public AbstractContainerMenu createMenu(int containerId, Inventory playerInventory, Player player) {
+    public AbstractContainerMenu createMenu(int containerId, @NonNull Inventory playerInventory, @NonNull Player player) {
         return new UniversalProcessorContainer(containerId, playerInventory, this, containerData);
     }
 }

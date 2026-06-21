@@ -38,4 +38,8 @@ public class ModBiomeModifiers {
             ));
         }
     }
+
+    private ModBiomeModifiers() {
+        /* This utility class should not be instantiated */
+    }
 }

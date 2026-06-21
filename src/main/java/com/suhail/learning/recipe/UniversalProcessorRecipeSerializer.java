@@ -11,6 +11,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.neoforged.neoforge.common.crafting.SizedIngredient;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
+import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 
@@ -61,7 +62,7 @@ public class UniversalProcessorRecipeSerializer implements RecipeSerializer<Univ
                     FluidStack.STREAM_CODEC.apply(ByteBufCodecs.list());
 
             @Override
-            public UniversalProcessorRecipe decode(RegistryFriendlyByteBuf buf) {
+            public @NonNull UniversalProcessorRecipe decode(@NonNull RegistryFriendlyByteBuf buf) {
                 List<SizedIngredient> itemInputs = ITEM_INPUT_LIST.decode(buf);
                 List<SizedFluidIngredient> fluidInputs = FLUID_INPUT_LIST.decode(buf);
                 List<ItemStack> itemOutputs = ITEM_OUTPUT_LIST.decode(buf);
@@ -74,7 +75,7 @@ public class UniversalProcessorRecipeSerializer implements RecipeSerializer<Univ
             }
 
             @Override
-            public void encode(RegistryFriendlyByteBuf buf, UniversalProcessorRecipe recipe) {
+            public void encode(@NonNull RegistryFriendlyByteBuf buf, @NonNull UniversalProcessorRecipe recipe) {
                 ITEM_INPUT_LIST.encode(buf, recipe.itemInputs());
                 FLUID_INPUT_LIST.encode(buf, recipe.fluidInputs());
                 ITEM_OUTPUT_LIST.encode(buf, recipe.itemOutputs());
@@ -86,12 +87,12 @@ public class UniversalProcessorRecipeSerializer implements RecipeSerializer<Univ
     }
 
     @Override
-    public MapCodec<UniversalProcessorRecipe> codec() {
+    public @NonNull MapCodec<UniversalProcessorRecipe> codec() {
         return codec;
     }
 
     @Override
-    public StreamCodec<RegistryFriendlyByteBuf, UniversalProcessorRecipe> streamCodec() {
+    public @NonNull StreamCodec<RegistryFriendlyByteBuf, UniversalProcessorRecipe> streamCodec() {
         return streamCodec;
     }
 }

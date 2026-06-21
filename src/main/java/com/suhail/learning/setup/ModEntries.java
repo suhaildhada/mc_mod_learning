@@ -17,12 +17,18 @@ import net.minecraft.world.level.material.MapColor;
 
 import java.awt.*;
 import java.util.HashMap;
+import java.util.Map;
 
 import static com.suhail.learning.registration.ModEntryBuilder.*;
 
 public class ModEntries {
-    public static final HashMap<String, ModEntry> ENTRIES = new HashMap<>();
-    public static BlockBehaviour.Properties COMMON_BLOCK_PROPS = BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(3.5f).requiresCorrectToolForDrops();
+    private ModEntries() {
+        /* This utility class should not be instantiated */
+    }
+
+    public static final Map<String, ModEntry> ENTRIES = new HashMap<>();
+    public static BlockBehaviour.Properties COMMON_BLOCK_PROPS = BlockBehaviour.Properties.of()
+            .mapColor(MapColor.METAL).strength(3.5f).requiresCorrectToolForDrops();
 
 
 
