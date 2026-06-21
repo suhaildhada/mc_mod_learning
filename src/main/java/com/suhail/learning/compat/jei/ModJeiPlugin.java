@@ -24,10 +24,7 @@ import net.minecraft.world.item.crafting.RecipeManager;
 import net.neoforged.fml.ModList;
 import org.jspecify.annotations.NonNull;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @JeiPlugin
 public class ModJeiPlugin implements IModPlugin {
@@ -79,7 +76,7 @@ public class ModJeiPlugin implements IModPlugin {
     @SuppressWarnings("unchecked")
     @Override
     public void registerRecipes(@NonNull IRecipeRegistration registration) {
-        RecipeManager recipeManager = Minecraft.getInstance().level.getRecipeManager();
+        RecipeManager recipeManager = Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager();
 
         for (ModEntry entry : ModEntries.ENTRIES.values()) {
             if (!entry.hasRecipes() || !Processors.isEnabled(entry.name())) continue;

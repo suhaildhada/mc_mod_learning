@@ -64,7 +64,7 @@ public class ProcessorRecipeCategory implements IRecipeCategory<UniversalProcess
         int width = START_X + totalSlots * SLOT_SPACING + (totalOutputs > 0 ? OUTPUT_GAP : 0) + 4;
         int height = START_Y + SLOT_SPACING + 4;
 
-        this.background = guiHelper.createBlankDrawable(Math.max(width, 40), Math.max(height, 24));
+        this.background = guiHelper.createBlankDrawable(Math.max(width, 40), height);
 
         if (entry.hasItem()) {
             this.icon = guiHelper.createDrawableItemStack(new ItemStack(entry.item().get()));

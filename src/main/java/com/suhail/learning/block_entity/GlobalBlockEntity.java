@@ -36,6 +36,7 @@ import org.jspecify.annotations.NonNull;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static net.minecraft.world.level.block.Block.UPDATE_CLIENTS;
 
@@ -470,7 +471,7 @@ public class GlobalBlockEntity extends BlockEntity {
             contentHandler.deserializeNBT(registries, tag.getCompound("ContentHandler"));
         }
         if (energyStorage != null && tag.contains("Energy")) {
-            energyStorage.deserializeNBT(registries, tag.get("Energy"));
+            energyStorage.deserializeNBT(registries, Objects.requireNonNull(tag.get("Energy")));
         }
         if (supportRecipes() && tag.contains("RecipeInfo")) {
             recipeInfo.load(tag.getCompound("RecipeInfo"));
@@ -518,7 +519,7 @@ public class GlobalBlockEntity extends BlockEntity {
     public void drops() {
         if (level == null || !contentHandler.hasItemCapability()) return;
         ItemCapabilityHandler handler = contentHandler.getItemHandler();
-        for (int i = 0; i < handler.getSlots(); i++) {
+        for (int i = 0; i < Objects.requireNonNull(handler).getSlots(); i++) {
             ItemStack stack = handler.getStackInSlot(i);
             if (!stack.isEmpty()) {
                 net.minecraft.world.Containers.dropItemStack(level, worldPosition.getX(),
@@ -536,7 +537,7 @@ public class GlobalBlockEntity extends BlockEntity {
             int inputSlots = (entry != null && entry.itemCap() != null) ? entry.itemCap().inputSlots : 0;
             ItemCapabilityHandler handler = contentHandler.getItemHandler();
             for (int i = 0; i < inputSlots; i++) {
-                items.add(handler.getStackInSlot(i));
+                items.add(Objects.requireNonNull(handler).getStackInSlot(i));
             }
         }
 
@@ -545,7 +546,7 @@ public class GlobalBlockEntity extends BlockEntity {
             int inputTanks = (entry != null && entry.fluidCap() != null) ? entry.fluidCap().inputTanks.size() : 0;
             FluidCapabilityHandler handler = contentHandler.getFluidHandler();
             for (int i = 0; i < inputTanks; i++) {
-                fluids.add(handler.getFluidInTank(i));
+                fluids.add(Objects.requireNonNull(handler).getFluidInTank(i));
             }
         }
 

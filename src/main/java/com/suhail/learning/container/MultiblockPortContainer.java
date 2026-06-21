@@ -13,6 +13,8 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import org.jspecify.annotations.NonNull;
 
+import java.util.Objects;
+
 public class MultiblockPortContainer extends AbstractContainerMenu {
 
     private final MultiblockPartBE blockEntity;
@@ -28,7 +30,7 @@ public class MultiblockPortContainer extends AbstractContainerMenu {
                                     MultiblockPartBE blockEntity, ContainerData data) {
         super(ModEntries.get(blockEntity.name).menu().get(), containerId);
         this.blockEntity = blockEntity;
-        this.access = ContainerLevelAccess.create(blockEntity.getLevel(), blockEntity.getBlockPos());
+        this.access = ContainerLevelAccess.create(Objects.requireNonNull(blockEntity.getLevel()), blockEntity.getBlockPos());
 
         ContainerData boundData = data != null ? data : new SimpleContainerData(Math.max(1, blockEntity.getSyncFieldCount()));
         addDataSlots(boundData);

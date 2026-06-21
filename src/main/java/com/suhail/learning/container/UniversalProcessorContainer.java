@@ -23,6 +23,8 @@ import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
 import org.jspecify.annotations.NonNull;
 
+import java.util.Objects;
+
 public class UniversalProcessorContainer extends AbstractContainerMenu {
 
     private final UniversalProcessorBE blockEntity;
@@ -41,7 +43,7 @@ public class UniversalProcessorContainer extends AbstractContainerMenu {
         super(ModEntries.get(blockEntity.name).menu().get(), containerId);
         this.blockEntity = blockEntity;
         this.data = data != null ? data : new SimpleContainerData(blockEntity.getSyncFieldCount());
-        this.access = ContainerLevelAccess.create(blockEntity.getLevel(), blockEntity.getBlockPos());
+        this.access = ContainerLevelAccess.create(Objects.requireNonNull(blockEntity.getLevel()), blockEntity.getBlockPos());
 
         addDataSlots(this.data);
 
@@ -60,11 +62,11 @@ public class UniversalProcessorContainer extends AbstractContainerMenu {
 
             for (int i = 0; i < inputItemCount; i++) {
                 SlotDef def = slotsLayout.slots.get(inputItemOffset + i);
-                addSlot(new SlotItemHandler(inv, i, def.x, def.y));
+                addSlot(new SlotItemHandler(Objects.requireNonNull(inv), i, def.x, def.y));
             }
             for (int i = 0; i < outputItemCount; i++) {
                 SlotDef def = slotsLayout.slots.get(outputItemOffset + i);
-                addSlot(new SlotItemHandler(inv, inputItemCount + i, def.x, def.y));
+                addSlot(new SlotItemHandler(Objects.requireNonNull(inv), inputItemCount + i, def.x, def.y));
             }
         } else if (blockEntity.hasInventory()) {
             IItemHandler inv = blockEntity.getItemHandler(null);
@@ -72,7 +74,7 @@ public class UniversalProcessorContainer extends AbstractContainerMenu {
                 for (int col = 0; col < 3; col++) {
                     int index = row * 3 + col;
                     if (index < blockEntity.slotCount) {
-                        addSlot(new SlotItemHandler(inv, index, 62 + col * 18, 17 + row * 18));
+                        addSlot(new SlotItemHandler(Objects.requireNonNull(inv), index, 62 + col * 18, 17 + row * 18));
                     }
                 }
             }

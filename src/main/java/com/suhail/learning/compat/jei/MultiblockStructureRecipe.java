@@ -48,7 +48,6 @@ public class MultiblockStructureRecipe {
             }
             stackItem.setCount(stackItem.getCount() - 1);
         }
-        this.ingredientManager = ingredientManager;
     }
     
     public ResourceLocation getId() {

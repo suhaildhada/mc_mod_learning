@@ -14,6 +14,7 @@ import org.jspecify.annotations.NonNull;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class ProcessorPeripheral implements IPeripheral {
 
@@ -68,7 +69,7 @@ public class ProcessorPeripheral implements IPeripheral {
     public final @Nullable Map<String, Object> getEnergy() {
         if (!be.hasEnergyStorage()) return null;
         Map<String, Object> result = new HashMap<>();
-        result.put("stored", be.energyStorage.getEnergyStored());
+        result.put("stored", Objects.requireNonNull(be.energyStorage).getEnergyStored());
         result.put("capacity", be.energyStorage.getMaxEnergyStored());
         return result;
     }
@@ -85,7 +86,7 @@ public class ProcessorPeripheral implements IPeripheral {
 
         if (be.hasInventory()) {
             ItemCapabilityHandler handler = be.contentHandler.getItemHandler();
-            for (int i = 0; i < handler.getSlots(); i++) {
+            for (int i = 0; i < Objects.requireNonNull(handler).getSlots(); i++) {
                 ItemStack stack = handler.getStackInSlot(i);
                 if (!stack.isEmpty()) {
                     Map<String, Object> item = new HashMap<>();
@@ -98,7 +99,7 @@ public class ProcessorPeripheral implements IPeripheral {
 
         if (be.hasFluidTanks()) {
             FluidCapabilityHandler handler = be.contentHandler.getFluidHandler();
-            for (int i = 0; i < handler.getTanks(); i++) {
+            for (int i = 0; i < Objects.requireNonNull(handler).getTanks(); i++) {
                 FluidStack fluid = handler.getFluidInTank(i);
                 if (!fluid.isEmpty()) {
                     Map<String, Object> tank = new HashMap<>();
@@ -122,7 +123,7 @@ public class ProcessorPeripheral implements IPeripheral {
     public final @Nullable Map<String, Object> getItem(int slot) {
         if (!be.hasInventory()) return null;
         ItemCapabilityHandler handler = be.contentHandler.getItemHandler();
-        if (slot < 1 || slot > handler.getSlots()) return null;
+        if (slot < 1 || slot > Objects.requireNonNull(handler).getSlots()) return null;
         ItemStack stack = handler.getStackInSlot(slot - 1);
         if (stack.isEmpty()) return null;
         Map<String, Object> item = new HashMap<>();
@@ -141,7 +142,7 @@ public class ProcessorPeripheral implements IPeripheral {
         Map<Integer, Map<String, Object>> result = new HashMap<>();
         if (!be.hasFluidTanks()) return result;
         FluidCapabilityHandler handler = be.contentHandler.getFluidHandler();
-        for (int i = 0; i < handler.getTanks(); i++) {
+        for (int i = 0; i < Objects.requireNonNull(handler).getTanks(); i++) {
             FluidStack fluid = handler.getFluidInTank(i);
             Map<String, Object> tank = new HashMap<>();
             tank.put("capacity", handler.getTankCapacity(i));
@@ -161,7 +162,7 @@ public class ProcessorPeripheral implements IPeripheral {
     public final boolean voidSlot(int slot) {
         if (!be.hasInventory()) return false;
         ItemCapabilityHandler handler = be.contentHandler.getItemHandler();
-        if (slot < 1 || slot > handler.getSlots()) return false;
+        if (slot < 1 || slot > Objects.requireNonNull(handler).getSlots()) return false;
         handler.setStackInSlot(slot - 1, ItemStack.EMPTY);
         return true;
     }
@@ -170,7 +171,7 @@ public class ProcessorPeripheral implements IPeripheral {
     public final boolean voidTank(int index) {
         if (!be.hasFluidTanks()) return false;
         FluidCapabilityHandler handler = be.contentHandler.getFluidHandler();
-        if (index < 1 || index > handler.getTanks()) return false;
+        if (index < 1 || index > Objects.requireNonNull(handler).getTanks()) return false;
         handler.getInternalHandler().voidTank(index - 1);
         return true;
     }
@@ -182,7 +183,7 @@ public class ProcessorPeripheral implements IPeripheral {
     public final @Nullable Map<String, Object> getTank(int index) {
         if (!be.hasFluidTanks()) return null;
         FluidCapabilityHandler handler = be.contentHandler.getFluidHandler();
-        if (index < 1 || index > handler.getTanks()) return null;
+        if (index < 1 || index > Objects.requireNonNull(handler).getTanks()) return null;
         FluidStack fluid = handler.getFluidInTank(index - 1);
         Map<String, Object> tank = new HashMap<>();
         tank.put("capacity", handler.getTankCapacity(index - 1));

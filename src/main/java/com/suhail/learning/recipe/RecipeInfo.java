@@ -24,6 +24,7 @@ import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.suhail.learning.Main.rlFromString;
 
@@ -127,7 +128,7 @@ public class RecipeInfo {
                 if (i >= outputSlotCount) return false;
                 ItemStack output = itemOutputs.get(i);
                 int slot = outputSlotStart + i;
-                ItemStack existing = itemHandler.getStackInSlot(slot);
+                ItemStack existing = Objects.requireNonNull(itemHandler).getStackInSlot(slot);
                 if (!existing.isEmpty()) {
                     if (!ItemStack.isSameItemSameComponents(existing, output)) return false;
                     if (existing.getCount() + output.getCount() > existing.getMaxStackSize()) return false;
@@ -144,7 +145,7 @@ public class RecipeInfo {
                 if (i >= outputTankCount) return false;
                 int tankIdx = outputTankStart + i;
                 FluidStack output = fluidOutputs.get(i);
-                int filled = fluidHandler.fillTank(tankIdx, output, IFluidHandler.FluidAction.SIMULATE);
+                int filled = Objects.requireNonNull(fluidHandler).fillTank(tankIdx, output, IFluidHandler.FluidAction.SIMULATE);
                 if (filled < output.getAmount()) return false;
             }
         } else if (!fluidOutputs.isEmpty()) {
@@ -156,7 +157,7 @@ public class RecipeInfo {
             var itemHandler = be.contentHandler.getItemHandler();
             for (int i = 0; i < itemOutputs.size(); i++) {
                 int slot = outputSlotStart + i;
-                ItemStack existing = itemHandler.getStackInSlot(slot);
+                ItemStack existing = Objects.requireNonNull(itemHandler).getStackInSlot(slot);
                 if (existing.isEmpty()) {
                     itemHandler.setStackInSlot(slot, itemOutputs.get(i).copy());
                 } else {
@@ -170,7 +171,7 @@ public class RecipeInfo {
             var fluidHandler = be.contentHandler.getFluidHandler();
             for (int i = 0; i < fluidOutputs.size(); i++) {
                 int tankIdx = outputTankStart + i;
-                fluidHandler.fillTank(tankIdx, fluidOutputs.get(i).copy(), IFluidHandler.FluidAction.EXECUTE);
+                Objects.requireNonNull(fluidHandler).fillTank(tankIdx, fluidOutputs.get(i).copy(), IFluidHandler.FluidAction.EXECUTE);
             }
         }
 
@@ -187,7 +188,7 @@ public class RecipeInfo {
             var itemHandler = be.contentHandler.getItemHandler();
             for (int i = 0; i < itemInputs.size(); i++) {
                 int count = itemInputs.get(i).count();
-                itemHandler.extractItem(i, count, false);
+                Objects.requireNonNull(itemHandler).extractItem(i, count, false);
             }
         }
 
@@ -197,7 +198,7 @@ public class RecipeInfo {
             var fluidHandler = be.contentHandler.getFluidHandler();
             for (int i = 0; i < fluidInputs.size(); i++) {
                 int amount = fluidInputs.get(i).amount();
-                fluidHandler.drainTank(i, amount, IFluidHandler.FluidAction.EXECUTE);
+                Objects.requireNonNull(fluidHandler).drainTank(i, amount, IFluidHandler.FluidAction.EXECUTE);
             }
         }
         changed = true;
@@ -302,7 +303,7 @@ public class RecipeInfo {
         if (be != null) return be.getLevel();
         return switch (FMLEnvironment.dist) {
             case CLIENT -> ClientUtil.tryGetClientWorld();
-            case DEDICATED_SERVER -> ServerLifecycleHooks.getCurrentServer().overworld();
+            case DEDICATED_SERVER -> Objects.requireNonNull(ServerLifecycleHooks.getCurrentServer()).overworld();
         };
     }
 

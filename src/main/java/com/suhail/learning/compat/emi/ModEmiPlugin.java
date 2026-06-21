@@ -24,6 +24,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @EmiEntrypoint
 public class ModEmiPlugin implements EmiPlugin {
@@ -56,7 +57,7 @@ public class ModEmiPlugin implements EmiPlugin {
             }
         }
 
-        RecipeManager recipeManager = Minecraft.getInstance().level.getRecipeManager();
+        RecipeManager recipeManager = Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager();
 
         for (ModEntry entry : ModEntries.ENTRIES.values()) {
             if (!entry.hasRecipes() || !Processors.isEnabled(entry.name())) continue;

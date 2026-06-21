@@ -137,7 +137,7 @@ public class UniversalProcessorRecipeBuilder implements RecipeBuilder {
     }
 
     @Override
-    public @NonNull Item getResult() {
+    public @org.jspecify.annotations.Nullable Item getResult() {
         return itemOutputs.isEmpty() ? null : itemOutputs.getFirst().getItem();
     }
 
