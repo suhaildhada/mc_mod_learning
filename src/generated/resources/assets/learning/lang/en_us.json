@@ -6,7 +6,7 @@
   "block.learning.silver_ore": "Silver Ore",
   "emi.category.learning.example_machine": "Example Machine",
   "emi.category.learning.foo_controller": "Foo Controller",
-  "fluid_type.modtemplate.molten_silver": "Molten Silver",
+  "fluid_type.learning.molten_silver": "Molten Silver",
   "item.learning.example_item": "Example Item",
   "item.learning.molten_silver_bucket": "Molten Silver Bucket",
   "item.learning.raw_silver": "Raw Silver",
@@ -23,9 +23,9 @@
   "item.learning.silver_plate": "Silver Plate",
   "item.learning.silver_shovel": "Silver Shovel",
   "item.learning.silver_sword": "Silver Sword",
-  "screen.modtemplate.multiblock.assembled": "Assembled",
-  "screen.modtemplate.multiblock.not_assembled": "Not Assembled",
-  "screen.modtemplate.side_config": "Side Configuration",
-  "screen.modtemplate.slot_selection": "Select Slot",
+  "screen.learning.multiblock.assembled": "Assembled",
+  "screen.learning.multiblock.not_assembled": "Not Assembled",
+  "screen.learning.side_config": "Side Configuration",
+  "screen.learning.slot_selection": "Select Slot",
   "tooltip.fluid.empty": "Empty"
 }
