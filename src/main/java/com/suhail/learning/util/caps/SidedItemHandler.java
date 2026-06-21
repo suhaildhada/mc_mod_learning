@@ -54,7 +54,6 @@ public class SidedItemHandler implements IItemHandler {
 
     @Override
     public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-        if (!canInsert) return false;
-        return inner.isItemValid(startSlot + slot, stack);
+        return canInsert && inner.isItemValid(startSlot + slot, stack);
     }
 }

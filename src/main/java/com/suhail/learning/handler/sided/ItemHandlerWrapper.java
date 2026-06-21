@@ -44,7 +44,6 @@ public class ItemHandlerWrapper implements IItemHandler {
 
     @Override
     public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-        if (!handler.canInsertFromSide(slot, stack, side)) return false;
-        return handler.isItemValid(slot, stack);
+        return handler.canInsertFromSide(slot, stack, side) && handler.isItemValid(slot, stack);
     }
 }

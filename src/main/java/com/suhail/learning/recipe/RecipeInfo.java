@@ -239,8 +239,8 @@ public class RecipeInfo {
 
     @SuppressWarnings("unchecked")
     public boolean isValidRecipe(Recipe<?> recipe) {
-        if (!(recipe instanceof UniversalProcessorRecipe)) return false;
-        return ((Recipe<ProcessorRecipeInput>) recipe).matches(be.inputs(), getLevel());
+        return recipe instanceof UniversalProcessorRecipe &&
+                ((Recipe<ProcessorRecipeInput>) recipe).matches(be.inputs(), getLevel());
     }
 
     private boolean hasRecipe() {
