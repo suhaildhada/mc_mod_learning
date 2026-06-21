@@ -1,0 +1,17 @@
+{
+  "type": "modtemplate:foo_controller",
+  "energy_per_tick": -200,
+  "item_inputs": [
+    {
+      "count": 1,
+      "item": "minecraft:dirt"
+    }
+  ],
+  "item_outputs": [
+    {
+      "count": 1,
+      "id": "minecraft:sand"
+    }
+  ],
+  "process_time": 2000
+}
