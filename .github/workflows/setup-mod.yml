@@ -84,9 +84,17 @@ jobs:
              "src/main/resources/${NEW_ID}.mixins.json"
 
           echo "==> Java sources: replace package/import strings"
-          find src/main/java src/test/java -name "*.java" 2>/dev/null | while read -r f; do
-            sed -i "s/${OLD_GROUP_ESC}/${NEW_GROUP}/g" "$f"
-            sed -i "s/\"${OLD_ID_ESC}\"/${NEW_ID}\"/g; s/\"${OLD_ID_ESC}:/\"${NEW_ID}:/g" "$f"
+          
+          for dir in src/main/java src/test/java; do
+            if [ -d "$dir" ]; then
+              find "$dir" -name "*.java" | while read -r f; do
+                sed -i "s/${OLD_GROUP_ESC}/${NEW_GROUP}/g" "$f"
+                sed -i \
+                  "s/\"${OLD_ID_ESC}\"/\"${NEW_ID}\"/g; \
+                   s/\"${OLD_ID_ESC}:/\"${NEW_ID}:/g" \
+                  "$f"
+              done
+            fi
           done
 
           echo "==> Java sources: move directory tree"
@@ -112,16 +120,20 @@ jobs:
               fi
             done
           done
-
+  
           echo "==> Resource files: replace modid in content"
-          find src/main/resources src/generated/resources -type f \
-               \( -name "*.json" -o -name "*.toml" -o -name "*.txt" -o -name "*.cfg" \) \
-               2>/dev/null | while read -r f; do
-            sed -i \
-              "s/${OLD_GROUP_ESC}/${NEW_GROUP}/g; \
-               s/\"${OLD_ID_ESC}:/\"${NEW_ID}:/g; \
-               s/${OLD_ID_ESC}:/${NEW_ID}:/g" \
-              "$f"
+          for dir in src/main/resources src/generated/resources; do
+            if [ -d "$dir" ]; then
+              find "$dir" -type f \
+                \( -name "*.json" -o -name "*.toml" -o -name "*.txt" -o -name "*.cfg" \) \
+                | while read -r f; do
+                  sed -i \
+                    "s/${OLD_GROUP_ESC}/${NEW_GROUP}/g; \
+                     s/\"${OLD_ID_ESC}:/\"${NEW_ID}:/g; \
+                     s/${OLD_ID_ESC}:/${NEW_ID}:/g" \
+                    "$f"
+                done
+            fi
           done
 
           echo "==> Self-delete this setup workflow"
